@@ -143,11 +143,11 @@ public final class Option<T> {
      * @throws NullPointerException if value is absent and the given action is
      *                              {@code null}
      */
-    public void ifAbsent(Runnable runnable) {
+    public void ifAbsent(Runnable action) {
         if (isPresent()) {
             return;
         }
-        runnable.run();
+        action.run();
     }
 
     /**
