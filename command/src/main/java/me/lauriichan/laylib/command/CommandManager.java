@@ -95,7 +95,12 @@ public final class CommandManager {
             actor.sendTranslatedMessage("command.process.create.no-action", Key.of("command", nodePack.getValue()));
             return null;
         }
-        CommandProcess process = new CommandProcess(nodePack.getValue(), node.getAction(), command.getInstance());
+        NodeAction action = node.getAction();
+        if(action.isRestricted() && !actor.hasPermission(action.getPermission())) {
+            actor.sendTranslatedMessage("command.process.not-permitted", Key.of("permission", action.getPermission()));
+            return null;
+        }
+        CommandProcess process = new CommandProcess(nodePack.getValue(), action, command.getInstance());
         NodeArgument argument = process.findNext(actor);
         if (argument == null) {
             executeProcess(actor, process);
@@ -198,8 +203,13 @@ public final class CommandManager {
         }
         process.executed();
         processes.remove(actor.getId()); // Remove process before executing
+        NodeAction action = process.getAction();
+        if(action.isRestricted() && !actor.hasPermission(action.getPermission())) {
+            actor.sendTranslatedMessage("command.process.not-permitted", Key.of("permission", action.getPermission()));
+            return true;
+        }
         try {
-            JavaAccess.invokeThrows(process.getInstance(), process.getAction().getMethod(), process.getValues());
+            JavaAccess.invokeThrows(process.getInstance(), action.getMethod(), process.getValues());
         } catch (Throwable e) {
             actor.sendTranslatedMessage("command.process.execution.failed", Key.of("command", process.getLabel()),
                 Key.of("error", e.getMessage()));
