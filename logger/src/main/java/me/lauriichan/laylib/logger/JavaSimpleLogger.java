@@ -10,6 +10,10 @@ public final class JavaSimpleLogger extends AbstractSimpleLogger {
     public JavaSimpleLogger(final Logger logger) {
         this.logger = logger;
     }
+    
+    public Logger getHandle() {
+        return logger;
+    }
 
     @Override
     protected void info(String message) {
