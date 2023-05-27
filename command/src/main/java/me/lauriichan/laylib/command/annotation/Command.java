@@ -15,5 +15,7 @@ public @interface Command {
     String[] aliases() default {};
 
     String description() default "";
+    
+    boolean forceOptionalArgsLast() default false;
 
 }

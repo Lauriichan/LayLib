@@ -2,12 +2,14 @@ package me.lauriichan.laylib.command;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import me.lauriichan.laylib.command.argument.provider.CommandManagerProvider;
 import me.lauriichan.laylib.command.util.LockedList;
@@ -62,6 +64,10 @@ public final class CommandManager {
     public String getPrefix() {
         return prefix;
     }
+    
+    public ISimpleLogger getLogger() {
+        return logger;
+    }
 
     public CommandManager setInjector(ICommandInjector injector) {
         this.injector.set(injector);
@@ -87,6 +93,10 @@ public final class CommandManager {
         NodeCommand command = getCommand(label);
         if (command == null) {
             actor.sendTranslatedMessage("command.process.create.no-command", Key.of("label", label));
+            return null;
+        }
+        if (command.isRestricted() && !actor.hasPermission(command.getPermission())) {
+            actor.sendTranslatedMessage("command.process.not-permitted", Key.of("permission", command.getPermission()));
             return null;
         }
         Entry<Node, String> nodePack = findNode(command.getNode(), prefix + label.toLowerCase(), 0, args);
@@ -261,8 +271,12 @@ public final class CommandManager {
     public NodeCommand getCommand(String name) {
         return commands.get(name.toLowerCase());
     }
+    
+    public List<NodeCommand> getCommands() {
+        return commands.values().stream().distinct().collect(Collectors.toList());
+    }
 
-    public String[] getCommands() {
+    public String[] getCommandNames() {
         return commands.keySet().toArray(String[]::new);
     }
 

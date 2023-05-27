@@ -11,6 +11,7 @@ import me.lauriichan.laylib.command.NodeArgument.NodeArgumentType;
 import me.lauriichan.laylib.command.annotation.Action;
 import me.lauriichan.laylib.command.annotation.Argument;
 import me.lauriichan.laylib.command.annotation.Command;
+import me.lauriichan.laylib.command.annotation.Permission;
 import me.lauriichan.laylib.command.exception.NotEnoughArgumentsException;
 import me.lauriichan.laylib.command.util.LockedList;
 import me.lauriichan.laylib.command.util.NodeHelper;
@@ -27,6 +28,7 @@ public final class NodeCommand {
 
     private final String name;
     private final String description;
+    private final String permission;
     private final LockedList<String> aliases;
 
     NodeCommand(Class<?> owner, ISimpleLogger logger, ArgumentRegistry registry) {
@@ -34,6 +36,8 @@ public final class NodeCommand {
         this.instance = Objects.requireNonNull(JavaAccess.instance(owner), "Couldn't initialize '" + ClassUtil.getClassName(owner) + "'!");
         Command command = Objects.requireNonNull(ClassUtil.getAnnotation(owner, Command.class), "Command annotation is null");
         String tmpName = command.name().toLowerCase().trim().replace("  ", " ").replace(' ', '_');
+        Permission permissionInfo = ClassUtil.getAnnotation(owner, Permission.class);
+        this.permission = permissionInfo == null ? null : permissionInfo.value();
         if (tmpName.isEmpty()) {
             throw new IllegalArgumentException("Name of command '" + ClassUtil.getClassName(owner) + "' is empty!");
         }
@@ -70,7 +74,7 @@ public final class NodeCommand {
                 }
                 arguments.add(argument);
             }
-            arguments.sort(NodeHelper.sorter());
+            arguments.sort(command.forceOptionalArgsLast() ? NodeHelper.sorterOptionalLast() : NodeHelper.sorter());
             tree.add(actions,
                 new NodeAction(method, arguments.isEmpty() ? Collections.emptyList() : Collections.unmodifiableList(arguments)));
         }
@@ -126,6 +130,14 @@ public final class NodeCommand {
 
     public Node getNode() {
         return node;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public boolean isRestricted() {
+        return permission != null;
     }
 
     public String getName() {

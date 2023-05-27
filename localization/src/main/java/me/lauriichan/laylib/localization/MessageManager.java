@@ -67,7 +67,10 @@ public class MessageManager {
     }
 
     public IMessage getMessage(String messageId, String language) {
-        MessageProvider provider = getProvider(messageId);
+        return getMessage(getProvider(messageId), language);
+    }
+
+    public IMessage getMessage(MessageProvider provider, String language) {
         if (provider == null) {
             return null;
         }
@@ -87,6 +90,10 @@ public class MessageManager {
             return null;
         }
         return format(message.value(), message.language(), placeholders, -1);
+    }
+
+    public String format(String message, String language, Key... placeholders) {
+        return format(message, language, placeholders, -1);
     }
 
     protected String format(String message, String language, Key[] values, int depth) {

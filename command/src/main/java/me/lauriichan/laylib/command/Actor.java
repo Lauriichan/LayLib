@@ -73,8 +73,16 @@ public abstract class Actor<P> implements IMessageReceiver {
         return DEFAULT_LANGUAGE;
     }
 
+    public String getTranslatedMessageAsString(MessageProvider provider, Key... placeholders) {
+        return messageManager.translate(provider, getLanguage(), placeholders);
+    }
+
     public String getTranslatedMessageAsString(String messageId, Key... placeholders) {
         return messageManager.translate(messageId, getLanguage(), placeholders);
+    }
+
+    public IMessage getTranslatedMessage(MessageProvider provider) {
+        return provider.getMessage(getLanguage());
     }
 
     public IMessage getTranslatedMessage(String messageId) {

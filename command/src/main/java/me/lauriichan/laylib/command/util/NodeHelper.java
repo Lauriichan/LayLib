@@ -18,12 +18,35 @@ public final class NodeHelper {
     private static final Comparator<? super NodeArgument> SORTER = new Comparator<NodeArgument>() {
         @Override
         public int compare(NodeArgument o1, NodeArgument o2) {
+            int rc = Boolean.compare(o1.isProvided(), o2.isProvided());
+            if (rc != 0) {
+                return rc;
+            }
+            return Integer.compare(o1.getIndex(), o2.getIndex());
+        }
+    };
+
+    private static final Comparator<? super NodeArgument> SORTER_OPTIONAL_LAST = new Comparator<NodeArgument>() {
+        @Override
+        public int compare(NodeArgument o1, NodeArgument o2) {
+            int rc = Boolean.compare(o1.isProvided(), o2.isProvided());
+            if (rc != 0) {
+                return rc;
+            }
+            rc = Boolean.compare(o1.isOptional(), o2.isOptional());
+            if (rc != 0) {
+                return rc;
+            }
             return Integer.compare(o1.getIndex(), o2.getIndex());
         }
     };
 
     public static Comparator<? super NodeArgument> sorter() {
         return SORTER;
+    }
+
+    public static Comparator<? super NodeArgument> sorterOptionalLast() {
+        return SORTER_OPTIONAL_LAST;
     }
 
     public static boolean isConstantArgument(Class<?> type) {
