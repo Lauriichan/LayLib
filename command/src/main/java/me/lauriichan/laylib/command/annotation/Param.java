@@ -10,28 +10,25 @@ import java.lang.annotation.Target;
 @Target(PARAMETER)
 public @interface Param {
 
+    public static final int TYPE_STRING = 0;
+    public static final int TYPE_BYTE = 1;
+    public static final int TYPE_SHORT = 2;
+    public static final int TYPE_INT = 3;
+    public static final int TYPE_LONG = 4;
+    public static final int TYPE_FLOAT = 5;
+    public static final int TYPE_DOUBLE = 6;
+    public static final int TYPE_CLASS = 7;
+    public static final int TYPE_STRING_ARRAY = 8;
+    public static final int TYPE_BYTE_ARRAY = 9;
+    public static final int TYPE_SHORT_ARRAY = 10;
+    public static final int TYPE_INT_ARRAY = 11;
+    public static final int TYPE_LONG_ARRAY = 12;
+    public static final int TYPE_FLOAT_ARRAY = 13;
+    public static final int TYPE_DOUBLE_ARRAY = 14;
+    public static final int TYPE_CLASS_ARRAY = 15;
+
     String name();
-    
-    /**
-     * 0: String<br>
-     * 1: byte<br>
-     * 2: short<br>
-     * 3: int<br>
-     * 4: long<br>
-     * 5: float<br>
-     * 6: double<br>
-     * 7: Class<br>
-     * 8: String[]<br>
-     * 9: byte[]<br>
-     * 10: short[]<br>
-     * 11: int[]<br>
-     * 12: long[]<br>
-     * 13: float[]<br>
-     * 14: double[]<br>
-     * 15: Class[]
-     * 
-     * @return type of this param
-     */
+
     int type();
 
     String stringValue() default "";
@@ -47,23 +44,23 @@ public @interface Param {
     float floatValue() default 0;
 
     double doubleValue() default 0;
-    
+
     Class<?> classValue() default Void.class;
-    
+
     String[] stringArrayValue() default {};
-    
+
     byte[] byteArrayValue() default {};
-    
+
     short[] shortArrayValue() default {};
-    
+
     int[] intArrayValue() default {};
-    
+
     long[] longArrayValue() default {};
-    
+
     float[] floatArrayValue() default {};
-    
+
     double[] doubleArrayValue() default {};
-    
+
     Class<?>[] classArrayValue() default {};
 
 }

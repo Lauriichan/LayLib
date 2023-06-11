@@ -61,52 +61,52 @@ public final class NodeHelper {
         loop:
         for (Param param : params) {
             switch (param.type()) {
-            case 0:
+            case Param.TYPE_STRING:
                 map.set(param.name(), param.stringValue());
                 break;
-            case 1:
+            case Param.TYPE_BYTE:
                 map.set(param.name(), param.byteValue());
                 break;
-            case 2:
+            case Param.TYPE_SHORT:
                 map.set(param.name(), param.shortValue());
                 break;
-            case 3:
+            case Param.TYPE_INT:
                 map.set(param.name(), param.intValue());
                 break;
-            case 4:
+            case Param.TYPE_LONG:
                 map.set(param.name(), param.longValue());
                 break;
-            case 5:
+            case Param.TYPE_FLOAT:
                 map.set(param.name(), param.floatValue());
                 break;
-            case 6:
+            case Param.TYPE_DOUBLE:
                 map.set(param.name(), param.doubleValue());
                 break;
-            case 7:
+            case Param.TYPE_CLASS:
                 map.set(param.name(), param.classValue());
                 break;
-            case 8:
+            case Param.TYPE_STRING_ARRAY:
                 map.set(param.name(), param.stringArrayValue());
                 break;
-            case 9:
+            case Param.TYPE_BYTE_ARRAY:
                 map.set(param.name(), param.byteArrayValue());
                 break;
-            case 10:
+            case Param.TYPE_SHORT_ARRAY:
                 map.set(param.name(), param.shortArrayValue());
                 break;
-            case 11:
+            case Param.TYPE_INT_ARRAY:
                 map.set(param.name(), param.intArrayValue());
                 break;
-            case 12:
+            case Param.TYPE_LONG_ARRAY:
                 map.set(param.name(), param.longArrayValue());
                 break;
-            case 13:
+            case Param.TYPE_FLOAT_ARRAY:
                 map.set(param.name(), param.floatArrayValue());
                 break;
-            case 14:
+            case Param.TYPE_DOUBLE_ARRAY:
                 map.set(param.name(), param.doubleArrayValue());
                 break;
-            case 15:
+            case Param.TYPE_CLASS_ARRAY:
                 map.set(param.name(), param.classArrayValue());
                 break;
             default:
