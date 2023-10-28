@@ -53,7 +53,4 @@ public interface IJsonNumber<V extends Number> extends IJson<V> {
 
     BigDecimal asBigDecimal();
 
-    @Override
-    V value();
-
 }
