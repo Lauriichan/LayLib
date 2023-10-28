@@ -4,23 +4,23 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public final class JsonByte implements IJsonNumber<Byte> {
-    
+
     private static final JsonByte[] BYTES = new JsonByte[256];
-    
+
     static {
         int index = 0;
         for (byte value = Byte.MIN_VALUE; value <= Byte.MAX_VALUE; value++) {
             BYTES[index++] = new JsonByte(value);
         }
     }
-    
-    public static JsonByte of(byte value) {
+
+    public static JsonByte of(final byte value) {
         return BYTES[value + 128];
     }
-    
+
     private final byte value;
-    
-    private JsonByte(byte value) {
+
+    private JsonByte(final byte value) {
         this.value = value;
     }
 
@@ -29,13 +29,14 @@ public final class JsonByte implements IJsonNumber<Byte> {
      */
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof Number) {
             return value == ((Number) obj).byteValue();
-        } else if (obj instanceof IJsonNumber) {
+        }
+        if (obj instanceof IJsonNumber) {
             return value == ((IJsonNumber<?>) obj).asByte();
         }
         return false;

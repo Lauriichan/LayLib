@@ -1,17 +1,17 @@
 package me.lauriichan.laylib.json;
 
 public final class JsonBoolean implements IJson<Boolean> {
-    
+
     public static JsonBoolean TRUE = new JsonBoolean(true);
     public static JsonBoolean FALSE = new JsonBoolean(false);
-    
-    public static JsonBoolean of(boolean state) {
+
+    public static JsonBoolean of(final boolean state) {
         return state ? JsonBoolean.TRUE : JsonBoolean.FALSE;
     }
-    
+
     private final boolean value;
-    
-    private JsonBoolean(boolean value) {
+
+    private JsonBoolean(final boolean value) {
         this.value = value;
     }
 
@@ -20,13 +20,14 @@ public final class JsonBoolean implements IJson<Boolean> {
      */
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof Boolean) {
-            return value == ((Boolean) obj);
-        } else if (obj instanceof JsonBoolean) {
+            return value == (Boolean) obj;
+        }
+        if (obj instanceof JsonBoolean) {
             return value == ((JsonBoolean) obj).value;
         }
         return false;

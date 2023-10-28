@@ -3,8 +3,8 @@ package me.lauriichan.laylib.json;
 public final class JsonString implements IJson<String> {
 
     private final String string;
-    
-    public JsonString(String string) {
+
+    public JsonString(final String string) {
         this.string = string;
     }
 
@@ -13,13 +13,14 @@ public final class JsonString implements IJson<String> {
      */
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof String) {
             return string.equals(obj);
-        } else if (obj instanceof JsonString) {
+        }
+        if (obj instanceof JsonString) {
             return string == ((JsonString) obj).value();
         }
         return false;
@@ -29,11 +30,11 @@ public final class JsonString implements IJson<String> {
     public int hashCode() {
         return string.hashCode();
     }
-    
+
     /*
      * IJson implementation
      */
-    
+
     @Override
     public JsonType type() {
         return JsonType.STRING;

@@ -27,7 +27,7 @@ enum JsonState {
 
     private final JsonToken token;
 
-    private JsonState(JsonToken token) {
+    JsonState(final JsonToken token) {
         this.token = token;
     }
 

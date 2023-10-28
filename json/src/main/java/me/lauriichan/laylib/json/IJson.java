@@ -5,62 +5,60 @@ import java.math.BigInteger;
 
 import me.lauriichan.laylib.json.util.PrimitiveMapper;
 
-import java.lang.IllegalArgumentException;
-
 public interface IJson<V> {
-    
-    public static final JsonNull NULL = JsonNull.NULL;
-    
-    public static final JsonBoolean TRUE = JsonBoolean.TRUE;
-    public static final JsonBoolean FALSE = JsonBoolean.FALSE;
-    
-    public static JsonBoolean of(boolean state) {
+
+    JsonNull NULL = JsonNull.NULL;
+
+    JsonBoolean TRUE = JsonBoolean.TRUE;
+    JsonBoolean FALSE = JsonBoolean.FALSE;
+
+    static JsonBoolean of(final boolean state) {
         return state ? TRUE : FALSE;
     }
-    
-    public static JsonString of(String string) {
+
+    static JsonString of(final String string) {
         return new JsonString(string);
     }
-    
-    public static JsonByte of(byte value) {
+
+    static JsonByte of(final byte value) {
         return JsonByte.of(value);
     }
-    
-    public static JsonShort of(short value) {
+
+    static JsonShort of(final short value) {
         return new JsonShort(value);
     }
-    
-    public static JsonInteger of(int value) {
+
+    static JsonInteger of(final int value) {
         return new JsonInteger(value);
     }
-    
-    public static JsonLong of(long value) {
+
+    static JsonLong of(final long value) {
         return new JsonLong(value);
     }
-    
-    public static JsonBigInteger of(BigInteger value) {
+
+    static JsonBigInteger of(final BigInteger value) {
         return new JsonBigInteger(value);
     }
-    
-    public static JsonFloat of(float value) {
+
+    static JsonFloat of(final float value) {
         return new JsonFloat(value);
     }
-    
-    public static JsonDouble of(double value) {
+
+    static JsonDouble of(final double value) {
         return new JsonDouble(value);
     }
-    
-    public static JsonBigDecimal of(BigDecimal value) {
+
+    static JsonBigDecimal of(final BigDecimal value) {
         return new JsonBigDecimal(value);
     }
 
-    public static IJson<?> of(Object object) throws IllegalArgumentException {
+    static IJson<?> of(final Object object) throws IllegalArgumentException {
         if (object == null) {
             return JsonNull.NULL;
         }
-        Class<?> type = PrimitiveMapper.fromPrimitive(object.getClass());
+        final Class<?> type = PrimitiveMapper.fromPrimitive(object.getClass());
         if (object == Boolean.class) {
-            return of((Boolean) object);
+            return of(object);
         }
         if (object == Byte.class) {
             return JsonByte.of((Byte) object);
@@ -89,58 +87,58 @@ public interface IJson<V> {
         if (type == BigDecimal.class) {
             return new JsonBigDecimal((BigDecimal) object);
         }
-        throw new IllegalArgumentException("Unsupported object of type %s: %s".formatted(type, object));
+        throw new IllegalArgumentException(String.format("Unsupported object of type %s: %s", type, object));
     }
 
     JsonType type();
 
     V value();
 
-    public default boolean isArray() {
+    default boolean isArray() {
         return type() == JsonType.ARRAY;
     }
 
-    public default JsonArray asJsonArray() {
+    default JsonArray asJsonArray() {
         return (JsonArray) this;
     }
 
-    public default boolean isObject() {
+    default boolean isObject() {
         return type() == JsonType.OBJECT;
     }
 
-    public default JsonObject asJsonObject() {
+    default JsonObject asJsonObject() {
         return (JsonObject) this;
     }
 
-    public default boolean isNull() {
+    default boolean isNull() {
         return type() == JsonType.NULL;
     }
 
-    public default JsonNull asJsonNull() {
+    default JsonNull asJsonNull() {
         return (JsonNull) this;
     }
 
-    public default boolean isString() {
+    default boolean isString() {
         return type() == JsonType.STRING;
     }
 
-    public default JsonString asJsonString() {
+    default JsonString asJsonString() {
         return (JsonString) this;
     }
 
-    public default boolean isNumber() {
+    default boolean isNumber() {
         return type() == JsonType.NUMBER;
     }
 
-    public default IJsonNumber<?> asJsonNumber() {
+    default IJsonNumber<?> asJsonNumber() {
         return (IJsonNumber<?>) this;
     }
 
-    public default boolean isBoolean() {
+    default boolean isBoolean() {
         return type() == JsonType.BOOLEAN;
     }
 
-    public default JsonBoolean asJsonBoolean() {
+    default JsonBoolean asJsonBoolean() {
         return (JsonBoolean) this;
     }
 

@@ -12,8 +12,8 @@ public final class JsonArray implements IJson<List<IJson<?>>>, List<IJson<?>>, R
 
     private final ObjectArrayList<IJson<?>> list = new ObjectArrayList<>();
 
-    public boolean contains(int index, JsonType type) {
-        IJson<?> value = get(index);
+    public boolean contains(final int index, final JsonType type) {
+        final IJson<?> value = get(index);
         return value == null || !type.hasType(value);
     }
 
@@ -22,7 +22,7 @@ public final class JsonArray implements IJson<List<IJson<?>>>, List<IJson<?>>, R
      */
 
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(final Object o) {
         if (o instanceof IJson<?>) {
             return list.contains(o);
         }
@@ -34,13 +34,14 @@ public final class JsonArray implements IJson<List<IJson<?>>>, List<IJson<?>>, R
      */
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof JsonArray) {
             return list.equals(((JsonArray) obj).list);
-        } else if (obj instanceof List) {
+        }
+        if (obj instanceof List) {
             return list.equals(obj);
         }
         return false;
@@ -85,42 +86,42 @@ public final class JsonArray implements IJson<List<IJson<?>>>, List<IJson<?>>, R
     }
 
     @Override
-    public <T> T[] toArray(T[] a) {
+    public <T> T[] toArray(final T[] a) {
         return list.toArray(a);
     }
 
     @Override
-    public boolean add(IJson<?> e) {
+    public boolean add(final IJson<?> e) {
         return list.add(e);
     }
 
     @Override
-    public boolean remove(Object o) {
+    public boolean remove(final Object o) {
         return list.remove(o);
     }
 
     @Override
-    public boolean containsAll(Collection<?> c) {
+    public boolean containsAll(final Collection<?> c) {
         return list.containsAll(c);
     }
 
     @Override
-    public boolean addAll(Collection<? extends IJson<?>> c) {
+    public boolean addAll(final Collection<? extends IJson<?>> c) {
         return list.addAll(c);
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends IJson<?>> c) {
+    public boolean addAll(final int index, final Collection<? extends IJson<?>> c) {
         return list.addAll(index, c);
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {
+    public boolean removeAll(final Collection<?> c) {
         return list.removeAll(c);
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(final Collection<?> c) {
         return list.retainAll(c);
     }
 
@@ -130,32 +131,32 @@ public final class JsonArray implements IJson<List<IJson<?>>>, List<IJson<?>>, R
     }
 
     @Override
-    public IJson<?> get(int index) {
+    public IJson<?> get(final int index) {
         return list.get(index);
     }
 
     @Override
-    public IJson<?> set(int index, IJson<?> element) {
+    public IJson<?> set(final int index, final IJson<?> element) {
         return list.set(index, element);
     }
 
     @Override
-    public void add(int index, IJson<?> element) {
+    public void add(final int index, final IJson<?> element) {
         list.add(index, element);
     }
 
     @Override
-    public IJson<?> remove(int index) {
+    public IJson<?> remove(final int index) {
         return list.remove(index);
     }
 
     @Override
-    public int indexOf(Object o) {
+    public int indexOf(final Object o) {
         return list.indexOf(o);
     }
 
     @Override
-    public int lastIndexOf(Object o) {
+    public int lastIndexOf(final Object o) {
         return list.lastIndexOf(o);
     }
 
@@ -165,12 +166,12 @@ public final class JsonArray implements IJson<List<IJson<?>>>, List<IJson<?>>, R
     }
 
     @Override
-    public ListIterator<IJson<?>> listIterator(int index) {
+    public ListIterator<IJson<?>> listIterator(final int index) {
         return list.listIterator(index);
     }
 
     @Override
-    public List<IJson<?>> subList(int fromIndex, int toIndex) {
+    public List<IJson<?>> subList(final int fromIndex, final int toIndex) {
         return list.subList(fromIndex, toIndex);
     }
 

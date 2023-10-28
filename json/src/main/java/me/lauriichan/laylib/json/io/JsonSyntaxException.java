@@ -4,15 +4,13 @@ public final class JsonSyntaxException extends Exception {
 
     private static final long serialVersionUID = -461425017365081360L;
 
-    public JsonSyntaxException() {
-        super();
-    }
+    public JsonSyntaxException() {}
 
-    public JsonSyntaxException(String message) {
+    public JsonSyntaxException(final String message) {
         super(message);
     }
 
-    public JsonSyntaxException(String message, Throwable cause) {
+    public JsonSyntaxException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

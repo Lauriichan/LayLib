@@ -24,11 +24,11 @@ public enum JsonType {
 
     private final JsonType parent;
 
-    private JsonType() {
+    JsonType() {
         this(null);
     }
 
-    private JsonType(JsonType parent) {
+    JsonType(final JsonType parent) {
         this.parent = parent;
     }
 
@@ -40,15 +40,15 @@ public enum JsonType {
         return parent != null;
     }
 
-    public boolean isType(JsonType type) {
-        return this == type || (parent != null && parent.isType(type));
+    public boolean isType(final JsonType type) {
+        return this == type || parent != null && parent.isType(type);
     }
 
     public boolean isPrimitive() {
         return isType(JsonType.PRIMITIVE);
     }
 
-    public boolean hasType(IJson<?> json) {
+    public boolean hasType(final IJson<?> json) {
         return json != null && json.type().isType(this);
     }
 

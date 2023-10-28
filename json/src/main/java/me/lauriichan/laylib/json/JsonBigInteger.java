@@ -7,11 +7,11 @@ public final class JsonBigInteger implements IJsonNumber<BigInteger> {
 
     private final BigInteger value;
 
-    public JsonBigInteger(long value) {
+    public JsonBigInteger(final long value) {
         this.value = BigInteger.valueOf(value);
     }
 
-    public JsonBigInteger(BigInteger value) {
+    public JsonBigInteger(final BigInteger value) {
         this.value = value;
     }
 
@@ -20,7 +20,7 @@ public final class JsonBigInteger implements IJsonNumber<BigInteger> {
      */
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -30,12 +30,13 @@ public final class JsonBigInteger implements IJsonNumber<BigInteger> {
             } else if (obj instanceof BigDecimal) {
                 try {
                     return value.equals(((BigDecimal) obj).toBigIntegerExact());
-                } catch (ArithmeticException ignore) {
+                } catch (final ArithmeticException ignore) {
                     return false;
                 }
             }
             return value.equals(BigInteger.valueOf(((Number) obj).longValue()));
-        } else if (obj instanceof IJsonNumber) {
+        }
+        if (obj instanceof IJsonNumber) {
             return value.equals(((IJsonNumber<?>) obj).asBigInteger());
         }
         return false;

@@ -25,11 +25,11 @@ enum JsonToken {
 
     private final JsonToken parent;
 
-    private JsonToken() {
+    JsonToken() {
         this.parent = null;
     }
 
-    private JsonToken(JsonToken parent) {
+    JsonToken(final JsonToken parent) {
         this.parent = parent;
     }
 

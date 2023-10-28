@@ -21,17 +21,17 @@ public final class PrimitiveMapper {
         map.put(double.class, Double.class);
         primitiveMapping = Object2ObjectMaps.unmodifiable(map);
         map = new Object2ObjectArrayMap<>();
-        for (Entry<Class<?>, Class<?>> entry : primitiveMapping.object2ObjectEntrySet()) {
+        for (final Entry<Class<?>, Class<?>> entry : primitiveMapping.object2ObjectEntrySet()) {
             map.put(entry.getValue(), entry.getKey());
         }
         complexMapping = Object2ObjectMaps.unmodifiable(map);
     }
 
-    public static Class<?> fromPrimitive(Class<?> type) {
+    public static Class<?> fromPrimitive(final Class<?> type) {
         return primitiveMapping.getOrDefault(type, type);
     }
 
-    public static Class<?> toPrimitive(Class<?> type) {
+    public static Class<?> toPrimitive(final Class<?> type) {
         return complexMapping.getOrDefault(type, type);
     }
 

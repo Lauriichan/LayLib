@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public final class JsonLong implements IJsonNumber<Long> {
-    
+
     private final long value;
-    
-    public JsonLong(long value) {
+
+    public JsonLong(final long value) {
         this.value = value;
     }
 
@@ -16,13 +16,14 @@ public final class JsonLong implements IJsonNumber<Long> {
      */
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof Number) {
             return value == ((Number) obj).longValue();
-        } else if (obj instanceof IJsonNumber) {
+        }
+        if (obj instanceof IJsonNumber) {
             return value == ((IJsonNumber<?>) obj).asLong();
         }
         return false;

@@ -1,10 +1,31 @@
 package me.lauriichan.laylib.json.io;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import me.lauriichan.laylib.json.*;
+import me.lauriichan.laylib.json.IJson;
+import me.lauriichan.laylib.json.JsonArray;
+import me.lauriichan.laylib.json.JsonBigDecimal;
+import me.lauriichan.laylib.json.JsonBigInteger;
+import me.lauriichan.laylib.json.JsonBoolean;
+import me.lauriichan.laylib.json.JsonByte;
+import me.lauriichan.laylib.json.JsonDouble;
+import me.lauriichan.laylib.json.JsonFloat;
+import me.lauriichan.laylib.json.JsonInteger;
+import me.lauriichan.laylib.json.JsonLong;
+import me.lauriichan.laylib.json.JsonObject;
+import me.lauriichan.laylib.json.JsonShort;
+import me.lauriichan.laylib.json.JsonString;
 
 public final class JsonParser {
 
@@ -12,15 +33,53 @@ public final class JsonParser {
         throw new UnsupportedOperationException("Parser class doesn't need to be initialized");
     }
 
-    public static IJson<?> fromString(String string) throws IOException, JsonSyntaxException, IllegalStateException {
-        try (JsonReader reader = new JsonReader(new StringReader(string))) {
-            return read(reader);
+    /*
+     * Reader methods
+     */
+
+    public static IJson<?> fromString(final String string) throws IOException, JsonSyntaxException, IllegalStateException {
+        try (StringReader reader = new StringReader(string)) {
+            return fromReader(reader);
         }
     }
 
-    private static IJson<?> read(JsonReader reader) throws IOException, JsonSyntaxException, IllegalStateException {
-        ObjectArrayList<IJson<?>> stack = new ObjectArrayList<>();
-        ObjectArrayList<String> keyStack = new ObjectArrayList<>();
+    public static IJson<?> fromBytes(final byte[] bytes) throws IOException, JsonSyntaxException, IllegalStateException {
+        try (ByteArrayInputStream stream = new ByteArrayInputStream(bytes)) {
+            return fromStream(stream);
+        }
+    }
+
+    public static IJson<?> fromStream(final InputStream stream) throws IOException, JsonSyntaxException, IllegalStateException {
+        try (InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+            return fromReader(reader);
+        }
+    }
+
+    public static IJson<?> fromReader(final Reader reader) throws IOException, JsonSyntaxException, IllegalStateException {
+        try (JsonReader jsonReader = new JsonReader(reader)) {
+            return read(jsonReader);
+        }
+    }
+
+    public static IJson<?> fromFile(final File file) throws IOException, JsonSyntaxException, IllegalStateException {
+        try (FileReader reader = new FileReader(file)) {
+            return fromReader(reader);
+        }
+    }
+
+    public static IJson<?> fromPath(final Path path) throws IOException, JsonSyntaxException, IllegalStateException {
+        try (InputStream stream = path.getFileSystem().provider().newInputStream(path, StandardOpenOption.READ)) {
+            return fromStream(stream);
+        }
+    }
+
+    /*
+     * Reading
+     */
+
+    public static IJson<?> read(final JsonReader reader) throws IOException, JsonSyntaxException, IllegalStateException {
+        final ObjectArrayList<IJson<?>> stack = new ObjectArrayList<>();
+        final ObjectArrayList<String> keyStack = new ObjectArrayList<>();
         String key = null;
         JsonToken token;
         IJson<?> json = IJson.NULL;
@@ -116,13 +175,13 @@ public final class JsonParser {
             case NUMBER:
             case EOF:
             default:
-                throw new IllegalStateException("Unexpected token: %s".formatted(token));
+                throw new IllegalStateException(String.format("Unexpected token: %s", token));
             }
             if (state != 2 && key != null) {
-                throw new IllegalStateException("Unexpected key: %s".formatted(key));
+                throw new IllegalStateException(String.format("Unexpected key: %s", key));
             }
             if (state == 0 && !stack.isEmpty()) {
-                IJson<?> next = stack.top();
+                final IJson<?> next = stack.top();
                 if (next instanceof JsonArray) {
                     state = 1;
                 } else if (next instanceof JsonObject) {

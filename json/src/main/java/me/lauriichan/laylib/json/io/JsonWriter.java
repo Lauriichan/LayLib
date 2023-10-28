@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Map;
@@ -43,7 +44,7 @@ public final class JsonWriter {
     private boolean pretty = false;
     private boolean spaces = false;
     private int indent = 1;
-    
+
     /*
      * Settings
      */
@@ -52,7 +53,7 @@ public final class JsonWriter {
         return pretty;
     }
 
-    public JsonWriter setPretty(boolean pretty) {
+    public JsonWriter setPretty(final boolean pretty) {
         this.pretty = pretty;
         return this;
     }
@@ -61,7 +62,7 @@ public final class JsonWriter {
         return spaces;
     }
 
-    public JsonWriter setSpaces(boolean spaces) {
+    public JsonWriter setSpaces(final boolean spaces) {
         this.spaces = spaces;
         return this;
     }
@@ -70,61 +71,61 @@ public final class JsonWriter {
         return indent;
     }
 
-    public JsonWriter setIndent(int indent) {
+    public JsonWriter setIndent(final int indent) {
         this.indent = indent;
         return this;
     }
 
-    public JsonWriter setTabIndent(int indent) {
+    public JsonWriter setTabIndent(final int indent) {
         this.indent = indent * TAB_SPACES;
         return this;
     }
-    
+
     /*
-     * Serializer methods
+     * Writer methods
      */
-    
-    public String toString(IJson<?> value) throws IOException {
+
+    public String toString(final IJson<?> value) throws IOException {
         try (StringWriter writer = new StringWriter()) {
-            writeValue(value, writer, 0);
+            toWriter(value, writer);
             return writer.toString();
         }
     }
-    
-    public byte[] toBytes(IJson<?> value) throws IOException {
+
+    public byte[] toBytes(final IJson<?> value) throws IOException {
         try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
             toStream(value, stream);
             return stream.toByteArray();
         }
     }
-    
-    public void toWriter(IJson<?> value, Writer writer) throws IOException {
+
+    public void toWriter(final IJson<?> value, final Writer writer) throws IOException {
         writeValue(value, writer, 0);
     }
-    
-    public void toStream(IJson<?> value, OutputStream stream) throws IOException {
-        try (OutputStreamWriter writer = new OutputStreamWriter(stream)) {
-            writeValue(value, writer, 0);
+
+    public void toStream(final IJson<?> value, final OutputStream stream) throws IOException {
+        try (OutputStreamWriter writer = new OutputStreamWriter(stream, StandardCharsets.UTF_8)) {
+            toWriter(value, writer);
         }
     }
-    
-    public void toFile(IJson<?> value, File file) throws IOException {
+
+    public void toFile(final IJson<?> value, final File file) throws IOException {
         try (FileWriter writer = new FileWriter(file)) {
-            writeValue(value, writer, 0);
+            toWriter(value, writer);
         }
     }
-    
-    public void toPath(IJson<?> value, Path path) throws IOException {
+
+    public void toPath(final IJson<?> value, final Path path) throws IOException {
         try (OutputStream stream = path.getFileSystem().provider().newOutputStream(path, StandardOpenOption.CREATE)) {
             toStream(value, stream);
         }
     }
-    
+
     /*
      * Writing
      */
 
-    private void writeEntry(Map.Entry<String, IJson<?>> entry, Writer writer, int depth) throws IOException {
+    private void writeEntry(final Map.Entry<String, IJson<?>> entry, final Writer writer, final int depth) throws IOException {
         if (pretty) {
             indent(writer, depth);
         }
@@ -136,7 +137,7 @@ public final class JsonWriter {
         writeValue(entry.getValue(), writer, depth);
     }
 
-    private void writeValue(IJson<?> value, Writer writer, int depth) throws IOException {
+    private void writeValue(final IJson<?> value, final Writer writer, final int depth) throws IOException {
         switch (value.type()) {
         case NULL:
             writeNull((JsonNull) value, writer);
@@ -170,16 +171,16 @@ public final class JsonWriter {
         }
     }
 
-    private void writeObject(JsonObject object, Writer writer, int depth) throws IOException {
+    private void writeObject(final JsonObject object, final Writer writer, final int depth) throws IOException {
         writer.append('{');
-        int size = object.size();
+        final int size = object.size();
         if (size != 0) {
             if (pretty) {
                 writer.append('\n');
             }
             int current = 0;
-            int deep = depth + 1;
-            for (Map.Entry<String, IJson<?>> entry : object) {
+            final int deep = depth + 1;
+            for (final Map.Entry<String, IJson<?>> entry : object) {
                 writeEntry(entry, writer, deep);
                 if (++current != size) {
                     writer.append(',');
@@ -195,16 +196,16 @@ public final class JsonWriter {
         writer.append('}');
     }
 
-    private void writeArray(JsonArray array, Writer writer, int depth) throws IOException {
+    private void writeArray(final JsonArray array, final Writer writer, final int depth) throws IOException {
         writer.append('[');
-        int size = array.size();
+        final int size = array.size();
         if (size != 0) {
             if (pretty) {
                 writer.append('\n');
             }
             int current = 0;
-            int deep = depth + 1;
-            for (IJson<?> value : array) {
+            final int deep = depth + 1;
+            for (final IJson<?> value : array) {
                 if (pretty) {
                     indent(writer, deep);
                 }
@@ -223,19 +224,19 @@ public final class JsonWriter {
         writer.append(']');
     }
 
-    private void writeString(JsonString string, Writer writer) throws IOException {
+    private void writeString(final JsonString string, final Writer writer) throws IOException {
         writeStringObject(string.value(), writer);
     }
 
-    private void writeNumber(IJsonNumber<?> number, Writer writer) throws IOException {
+    private void writeNumber(final IJsonNumber<?> number, final Writer writer) throws IOException {
         writer.append(number.value().toString());
     }
 
-    private void writeNull(JsonNull jsonNull, Writer writer) throws IOException {
+    private void writeNull(final JsonNull jsonNull, final Writer writer) throws IOException {
         writer.append("null");
     }
 
-    private void writeBoolean(JsonBoolean jsonBoolean, Writer writer) throws IOException {
+    private void writeBoolean(final JsonBoolean jsonBoolean, final Writer writer) throws IOException {
         writer.append(jsonBoolean.value().toString());
     }
 
@@ -243,21 +244,21 @@ public final class JsonWriter {
      * Helpers
      */
 
-    private void indent(Writer writer, int depth) throws IOException {
-        int amount = indent * depth;
-        char append = spaces ? ' ' : '\t';
+    private void indent(final Writer writer, final int depth) throws IOException {
+        final int amount = indent * depth;
+        final char append = spaces ? ' ' : '\t';
         for (int count = 0; count < amount; count++) {
             writer.append(append);
         }
     }
 
-    private void writeStringObject(String string, Writer writer) throws IOException {
-        char[] array = string.toCharArray();
-        StringBuilder builder = new StringBuilder("\"");
+    private void writeStringObject(final String string, final Writer writer) throws IOException {
+        final char[] array = string.toCharArray();
+        final StringBuilder builder = new StringBuilder("\"");
         for (int index = 0; index < array.length; index++) {
-            char character = array[index];
+            final char character = array[index];
             if (character < 128) {
-                String escaped = ESCAPE_CHARS[character];
+                final String escaped = ESCAPE_CHARS[character];
                 if (escaped != null) {
                     builder.append(escaped);
                     continue;

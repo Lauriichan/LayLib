@@ -7,7 +7,7 @@ public final class JsonShort implements IJsonNumber<Short> {
 
     private final short value;
 
-    public JsonShort(short value) {
+    public JsonShort(final short value) {
         this.value = value;
     }
 
@@ -16,13 +16,14 @@ public final class JsonShort implements IJsonNumber<Short> {
      */
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof Number) {
             return value == ((Number) obj).shortValue();
-        } else if (obj instanceof IJsonNumber) {
+        }
+        if (obj instanceof IJsonNumber) {
             return value == ((IJsonNumber<?>) obj).asShort();
         }
         return false;

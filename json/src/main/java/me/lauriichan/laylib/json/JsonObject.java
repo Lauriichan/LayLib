@@ -18,7 +18,7 @@ public final class JsonObject
      */
 
     @Override
-    public final JsonType type() {
+    public JsonType type() {
         return JsonType.OBJECT;
     }
 
@@ -32,13 +32,14 @@ public final class JsonObject
      */
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof JsonObject) {
             return map.equals(((JsonObject) obj).map);
-        } else if (obj instanceof Map) {
+        }
+        if (obj instanceof Map) {
             return map.equals(obj);
         }
         return false;
@@ -64,32 +65,32 @@ public final class JsonObject
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsKey(final Object key) {
         return map.containsKey(key);
     }
 
     @Override
-    public boolean containsValue(Object value) {
+    public boolean containsValue(final Object value) {
         return map.containsValue(value);
     }
 
     @Override
-    public IJson<?> get(Object key) {
+    public IJson<?> get(final Object key) {
         return map.get(key);
     }
 
     @Override
-    public IJson<?> put(String key, IJson<?> value) {
+    public IJson<?> put(final String key, final IJson<?> value) {
         return map.put(key, value);
     }
 
     @Override
-    public IJson<?> remove(Object key) {
+    public IJson<?> remove(final Object key) {
         return map.remove(key);
     }
 
     @Override
-    public void putAll(Map<? extends String, ? extends IJson<?>> m) {
+    public void putAll(final Map<? extends String, ? extends IJson<?>> m) {
         map.putAll(m);
     }
 

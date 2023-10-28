@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public final class JsonInteger implements IJsonNumber<Integer> {
-    
+
     private final int value;
-    
-    public JsonInteger(int value) {
+
+    public JsonInteger(final int value) {
         this.value = value;
     }
 
@@ -16,13 +16,14 @@ public final class JsonInteger implements IJsonNumber<Integer> {
      */
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof Number) {
             return value == ((Number) obj).intValue();
-        } else if (obj instanceof IJsonNumber) {
+        }
+        if (obj instanceof IJsonNumber) {
             return value == ((IJsonNumber<?>) obj).asInt();
         }
         return false;

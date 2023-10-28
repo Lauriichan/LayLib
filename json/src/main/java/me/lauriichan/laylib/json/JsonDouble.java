@@ -7,7 +7,7 @@ public final class JsonDouble implements IJsonNumber<Double> {
 
     private final double value;
 
-    public JsonDouble(double value) {
+    public JsonDouble(final double value) {
         this.value = value;
     }
 
@@ -16,13 +16,14 @@ public final class JsonDouble implements IJsonNumber<Double> {
      */
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof Number) {
             return value == ((Number) obj).doubleValue();
-        } else if (obj instanceof IJsonNumber) {
+        }
+        if (obj instanceof IJsonNumber) {
             return value == ((IJsonNumber<?>) obj).asDouble();
         }
         return false;

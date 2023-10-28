@@ -5,55 +5,55 @@ import java.math.BigInteger;
 
 public interface IJsonNumber<V extends Number> extends IJson<V> {
 
-    public default JsonByte asJsonByte() {
+    default JsonByte asJsonByte() {
         return (JsonByte) this;
     }
 
-    public byte asByte();
+    byte asByte();
 
-    public default JsonShort asJsonShort() {
+    default JsonShort asJsonShort() {
         return (JsonShort) this;
     }
 
-    public short asShort();
+    short asShort();
 
-    public default JsonInteger asJsonInteger() {
+    default JsonInteger asJsonInteger() {
         return (JsonInteger) this;
     }
 
-    public int asInt();
+    int asInt();
 
-    public default JsonLong asJsonLong() {
+    default JsonLong asJsonLong() {
         return (JsonLong) this;
     }
 
-    public long asLong();
+    long asLong();
 
-    public default JsonBigInteger asJsonBigInteger() {
+    default JsonBigInteger asJsonBigInteger() {
         return (JsonBigInteger) this;
     }
 
-    public BigInteger asBigInteger();
+    BigInteger asBigInteger();
 
-    public default JsonFloat asJsonFloat() {
+    default JsonFloat asJsonFloat() {
         return (JsonFloat) this;
     }
 
-    public float asFloat();
+    float asFloat();
 
-    public default JsonDouble asJsonDouble() {
+    default JsonDouble asJsonDouble() {
         return (JsonDouble) this;
     }
 
-    public double asDouble();
+    double asDouble();
 
-    public default JsonBigDecimal asJsonBigDecimal() {
+    default JsonBigDecimal asJsonBigDecimal() {
         return (JsonBigDecimal) this;
     }
 
-    public BigDecimal asBigDecimal();
+    BigDecimal asBigDecimal();
 
     @Override
-    public V value();
+    V value();
 
 }

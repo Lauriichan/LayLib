@@ -55,7 +55,7 @@ final class JsonReader implements AutoCloseable {
 
     public String stringBuffer;
 
-    public JsonReader(Reader reader) throws IOException {
+    public JsonReader(final Reader reader) throws IOException {
         this.reader = reader;
         stack.push(JsonScope.EMPTY_READER);
     }
@@ -72,14 +72,14 @@ final class JsonReader implements AutoCloseable {
     public JsonToken next() throws IOException, JsonSyntaxException {
         return currentState().asToken();
     }
-    
+
     public boolean hasNext() throws IOException, JsonSyntaxException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         return state != JsonState.EOF;
     }
 
     public String readName() throws IOException, JsonSyntaxException, IllegalStateException {
-        JsonState current = currentState();
+        final JsonState current = currentState();
         switch (current) {
         case KEY_SINGLE:
             resetState();
@@ -93,7 +93,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public String readString() throws IOException, JsonSyntaxException, IllegalStateException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         switch (state.asToken().actualToken()) {
         case STRING:
             resetState();
@@ -107,7 +107,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public boolean readBoolean() throws IOException, JsonSyntaxException, IllegalStateException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         switch (state) {
         case TRUE:
             resetState();
@@ -121,7 +121,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public byte readByte() throws IOException, JsonSyntaxException, IllegalStateException, NumberFormatException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         if (state != JsonState.BYTE) {
             throw illegalState(JsonToken.BYTE, state);
         }
@@ -130,7 +130,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public short readShort() throws IOException, JsonSyntaxException, IllegalStateException, NumberFormatException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         if (state != JsonState.SHORT) {
             throw illegalState(JsonToken.SHORT, state);
         }
@@ -139,7 +139,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public int readInteger() throws IOException, JsonSyntaxException, IllegalStateException, NumberFormatException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         if (state != JsonState.INTEGER) {
             throw illegalState(JsonToken.INTEGER, state);
         }
@@ -148,7 +148,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public long readLong() throws IOException, JsonSyntaxException, IllegalStateException, NumberFormatException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         if (state != JsonState.LONG) {
             throw illegalState(JsonToken.LONG, state);
         }
@@ -157,7 +157,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public BigInteger readBigInteger() throws IOException, JsonSyntaxException, IllegalStateException, NumberFormatException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         if (state != JsonState.BIG_INTEGER) {
             throw illegalState(JsonToken.BIG_INTEGER, state);
         }
@@ -166,7 +166,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public float readFloat() throws IOException, JsonSyntaxException, IllegalStateException, NumberFormatException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         if (state != JsonState.FLOAT) {
             throw illegalState(JsonToken.FLOAT, state);
         }
@@ -175,7 +175,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public double readDouble() throws IOException, JsonSyntaxException, IllegalStateException, NumberFormatException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         if (state != JsonState.DOUBLE) {
             throw illegalState(JsonToken.DOUBLE, state);
         }
@@ -184,7 +184,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public BigDecimal readBigDecimal() throws IOException, JsonSyntaxException, IllegalStateException, NumberFormatException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         if (state != JsonState.BIG_DECIMAL) {
             throw illegalState(JsonToken.BIG_DECIMAL, state);
         }
@@ -193,7 +193,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public Number readNumber() throws IOException, JsonSyntaxException, IllegalStateException, NumberFormatException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         switch (state) {
         case BYTE:
             return readByte();
@@ -217,7 +217,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public void readNull() throws IOException, JsonSyntaxException, IllegalStateException {
-        JsonState state = currentState();
+        final JsonState state = currentState();
         if (state != JsonState.NULL) {
             throw illegalState(JsonToken.NULL, state);
         }
@@ -225,7 +225,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public void beginArray() throws IOException, JsonSyntaxException, IllegalStateException {
-        JsonState current = currentState();
+        final JsonState current = currentState();
         if (current != JsonState.START_ARRAY) {
             throw illegalState(JsonToken.START_ARRAY, current);
         }
@@ -234,7 +234,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public void endArray() throws IOException, JsonSyntaxException, IllegalStateException {
-        JsonState current = currentState();
+        final JsonState current = currentState();
         if (current != JsonState.END_ARRAY) {
             throw illegalState(JsonToken.END_ARRAY, current);
         }
@@ -242,7 +242,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public void beginObject() throws IOException, JsonSyntaxException, IllegalStateException {
-        JsonState current = currentState();
+        final JsonState current = currentState();
         if (current != JsonState.START_OBJECT) {
             throw illegalState(JsonToken.START_OBJECT, current);
         }
@@ -251,7 +251,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     public void endObject() throws IOException, JsonSyntaxException, IllegalStateException {
-        JsonState current = currentState();
+        final JsonState current = currentState();
         if (current != JsonState.END_OBJECT) {
             throw illegalState(JsonToken.END_OBJECT, current);
         }
@@ -263,7 +263,7 @@ final class JsonReader implements AutoCloseable {
      */
 
     private String readSingleString() throws IOException, JsonSyntaxException {
-        char[] buffer = this.buffer;
+        final char[] buffer = this.buffer;
         StringBuilder builder = null;
         while (true) {
             int position = cursor;
@@ -271,11 +271,11 @@ final class JsonReader implements AutoCloseable {
 
             int start = position;
             while (position < limit) {
-                char current = buffer[position++];
+                final char current = buffer[position++];
                 switch (current) {
                 case '\'':
                     cursor = position;
-                    int length0 = position - start - 1;
+                    final int length0 = position - start - 1;
                     if (builder == null) {
                         return new String(buffer, start, length0);
                     } else {
@@ -283,7 +283,7 @@ final class JsonReader implements AutoCloseable {
                     }
                 case '\\':
                     cursor = position;
-                    int length1 = position - start - 1;
+                    final int length1 = position - start - 1;
                     if (builder == null) {
                         builder = new StringBuilder(Math.max((length1 + 1) * 2, 16));
                     }
@@ -312,7 +312,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     private String readDoubleString() throws IOException, JsonSyntaxException {
-        char[] buffer = this.buffer;
+        final char[] buffer = this.buffer;
         StringBuilder builder = null;
         while (true) {
             int position = cursor;
@@ -320,11 +320,11 @@ final class JsonReader implements AutoCloseable {
 
             int start = position;
             while (position < limit) {
-                char current = buffer[position++];
+                final char current = buffer[position++];
                 switch (current) {
                 case '"':
                     cursor = position;
-                    int length0 = position - start - 1;
+                    final int length0 = position - start - 1;
                     if (builder == null) {
                         return new String(buffer, start, length0);
                     } else {
@@ -332,7 +332,7 @@ final class JsonReader implements AutoCloseable {
                     }
                 case '\\':
                     cursor = position;
-                    int length1 = position - start - 1;
+                    final int length1 = position - start - 1;
                     if (builder == null) {
                         builder = new StringBuilder(Math.max((length1 + 1) * 2, 16));
                     }
@@ -365,7 +365,7 @@ final class JsonReader implements AutoCloseable {
             throw wrongSyntax("Never ending escape sequence");
         }
 
-        char current = buffer[cursor++];
+        final char current = buffer[cursor++];
         switch (current) {
         case 'u':
             if (cursor + 4 > limit && !readToBuffer(4)) {
@@ -374,18 +374,18 @@ final class JsonReader implements AutoCloseable {
 
             char output = 0;
             for (int index = cursor, max = index + 4; index < max; index++) {
-                char check = buffer[index];
+                final char check = buffer[index];
                 output <<= 4;
                 if (check >= '0' && check <= '9') {
-                    output += (check - '0');
+                    output += check - '0';
                     continue;
                 }
                 if (check >= 'a' && check <= 'f') {
-                    output += (check - 'a' + 10);
+                    output += check - 'a' + 10;
                     continue;
                 }
                 if (check >= 'A' && check <= 'F') {
-                    output += (check - 'A' + 10);
+                    output += check - 'A' + 10;
                     continue;
                 }
                 throw new NumberFormatException("\\u" + new String(buffer, cursor, 4));
@@ -429,8 +429,8 @@ final class JsonReader implements AutoCloseable {
     }
 
     public String stackAsString() {
-        StringBuilder builder = new StringBuilder("[");
-        ObjectIterator<JsonScope> iterator= stack.iterator();
+        final StringBuilder builder = new StringBuilder("[");
+        final ObjectIterator<JsonScope> iterator = stack.iterator();
         while (iterator.hasNext()) {
             builder.append(iterator.next().name());
             if (iterator.hasNext()) {
@@ -452,7 +452,7 @@ final class JsonReader implements AutoCloseable {
                 stack.push(JsonScope.FILLED_ARRAY);
                 break;
             case FILLED_ARRAY:
-                char character3 = nextCharacter();
+                final char character3 = nextCharacter();
                 switch (character3) {
                 case ']':
                     pop();
@@ -468,7 +468,7 @@ final class JsonReader implements AutoCloseable {
                 pop();
                 stack.push(JsonScope.PENDING_NAME);
                 if (current == JsonScope.FILLED_OBJECT) {
-                    char character1 = nextCharacter();
+                    final char character1 = nextCharacter();
                     switch (character1) {
                     case '}':
                         pop();
@@ -479,7 +479,7 @@ final class JsonReader implements AutoCloseable {
                         throw wrongSyntax("Never ending object");
                     }
                 }
-                char character2 = nextCharacter();
+                final char character2 = nextCharacter();
                 switch (character2) {
                 case '\'':
                     return state = JsonState.KEY_SINGLE;
@@ -505,7 +505,7 @@ final class JsonReader implements AutoCloseable {
             case PENDING_NAME:
                 pop();
                 stack.push(JsonScope.FILLED_OBJECT);
-                char character0 = nextCharacter();
+                final char character0 = nextCharacter();
                 if (character0 != ':') {
                     throw wrongSyntax("Expected ':'");
                 }
@@ -514,7 +514,7 @@ final class JsonReader implements AutoCloseable {
                 return state = JsonState.EOF;
             }
 
-            char character = nextCharacter();
+            final char character = nextCharacter();
             switch (character) {
             case ']':
                 if (current == JsonScope.EMPTY_ARRAY) {
@@ -539,41 +539,14 @@ final class JsonReader implements AutoCloseable {
             if (isKeyword() || isNumber()) {
                 return state;
             }
-            // printDebug();
             throw wrongSyntax("No value present");
-        } catch (EndOfFileException eof) {
+        } catch (final EndOfFileException eof) {
             return state = JsonState.EOF;
         }
     }
 
-    // private void printDebug() throws IOException {
-    // StringBuilder builder = new StringBuilder();
-    // int current = this.cursor;
-    // int amount = Math.min(cursor, 10);
-    // this.cursor = current - amount;
-    // builder.append('\'');
-    // for(int index = 0; index < amount; index++) {
-    // try {
-    // builder.append(nextCharacter());
-    // } catch(EndOfFileException eof) {
-    // break;
-    // }
-    // }
-    // builder.append("' <<-- \n").append('\'');
-    // for(int index = 0; index < 16; index++) {
-    // try {
-    // builder.append(nextCharacter());
-    // } catch(EndOfFileException eof) {
-    // break;
-    // }
-    // }
-    // this.cursor = current;
-    // System.out.println(cursor + ": '" + buffer[cursor] + "'\n" +
-    // builder.append('\'').toString());
-    // }
-
     private boolean isKeyword() throws IOException, JsonSyntaxException {
-        char current = buffer[cursor];
+        final char current = buffer[cursor];
         JsonState expect;
         String word;
         String wordUpped;
@@ -600,12 +573,12 @@ final class JsonReader implements AutoCloseable {
             return false;
         }
 
-        int length = word.length();
+        final int length = word.length();
         for (int index = 1; index < length; index++) {
             if (cursor + index >= limit && !readToBuffer(index + 1)) {
                 return false;
             }
-            char character = buffer[cursor + index];
+            final char character = buffer[cursor + index];
             if (character != word.charAt(index) && character != wordUpped.charAt(index)) {
                 return false;
             }
@@ -621,7 +594,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     private boolean isNumber() throws IOException, JsonSyntaxException {
-        char[] buffer = this.buffer;
+        final char[] buffer = this.buffer;
         int position = cursor;
         int limit = this.limit;
 
@@ -631,8 +604,8 @@ final class JsonReader implements AutoCloseable {
         boolean exponential = false;
         boolean exponentialNegative = false;
 
-        StringBuilder value = new StringBuilder();
-        StringBuilder exponentialValue = new StringBuilder();
+        final StringBuilder value = new StringBuilder();
+        final StringBuilder exponentialValue = new StringBuilder();
 
         int parser = NUMBER_NONE;
 
@@ -651,7 +624,7 @@ final class JsonReader implements AutoCloseable {
                 position = cursor;
                 limit = this.limit;
             }
-            char current = buffer[position + index];
+            final char current = buffer[position + index];
             switch (current) {
             case '-':
                 switch (parser) {
@@ -687,7 +660,7 @@ final class JsonReader implements AutoCloseable {
                 }
             case 'e':
             case 'E':
-                if ((parser != NUMBER_DIGIT && parser != NUMBER_NONE) || exponential) {
+                if (parser != NUMBER_DIGIT && parser != NUMBER_NONE || exponential) {
                     return false;
                 }
                 if (first) {
@@ -764,12 +737,12 @@ final class JsonReader implements AutoCloseable {
                 cursor += 1;
                 return true;
             }
-            int length = (decimal ? stringBuffer.split("\\.", 2)[0].length() : stringBuffer.length()) - (negative ? 1 : 0);
+            final int length = (decimal ? stringBuffer.split("\\.", 2)[0].length() : stringBuffer.length()) - (negative ? 1 : 0);
 
             if (decimal) {
                 if (exponential && exponentialValue.length() > 0) {
                     BigDecimal number = new BigDecimal(stringBuffer.split("E", 2)[0]);
-                    int amount = Integer.parseInt(exponentialValue.toString());
+                    final int amount = Integer.parseInt(exponentialValue.toString());
                     number = exponentialNegative ? number.movePointLeft(amount) : number.movePointRight(amount);
                     if (hasSize(number, SIZE_FLOAT, negative)) {
                         state = JsonState.FLOAT;
@@ -834,28 +807,27 @@ final class JsonReader implements AutoCloseable {
             }
             cursor += read;
             return true;
-        } catch (NumberFormatException exception) {
+        } catch (final NumberFormatException exception) {
             exception.printStackTrace();
             throw new IllegalStateException("fail", exception);
-            // return false;
         }
     }
 
-    private boolean hasSize(BigDecimal compare, BigDecimal comparision, boolean negative) {
+    private boolean hasSize(final BigDecimal compare, final BigDecimal comparision, final boolean negative) {
         if (negative) {
             return compare.compareTo(comparision.multiply(BigDecimal.ONE.negate())) >= 1;
         }
         return compare.compareTo(comparision) <= -1;
     }
 
-    private boolean isLower(String value, BigDecimal comparision, boolean negative) {
+    private boolean isLower(final String value, final BigDecimal comparision, final boolean negative) {
         if (negative) {
             return new BigDecimal(value).compareTo(comparision.multiply(BigDecimal.ONE.negate())) == 1;
         }
         return new BigDecimal(value).compareTo(comparision) == -1;
     }
 
-    private boolean isLower(String value, BigInteger comparision, boolean negative) {
+    private boolean isLower(final String value, final BigInteger comparision, final boolean negative) {
         if (negative) {
             return new BigInteger(value).compareTo(comparision.multiply(BigInteger.ONE.negate())) == 1;
         }
@@ -863,7 +835,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     private char nextCharacter() throws IOException, EndOfFileException, JsonSyntaxException {
-        char[] buffer = this.buffer;
+        final char[] buffer = this.buffer;
         int position = cursor;
         int limit = this.limit;
         while (true) {
@@ -875,7 +847,7 @@ final class JsonReader implements AutoCloseable {
                 position = cursor;
                 limit = this.limit;
             }
-            char current = buffer[position++];
+            final char current = buffer[position++];
             switch (current) {
             case '\n':
                 lineAmount++;
@@ -889,13 +861,13 @@ final class JsonReader implements AutoCloseable {
                 cursor = position;
                 if (position == limit) {
                     cursor--;
-                    boolean loaded = readToBuffer(2);
+                    final boolean loaded = readToBuffer(2);
                     cursor++;
                     if (!loaded) {
                         return current;
                     }
                 }
-                char test = buffer[cursor];
+                final char test = buffer[cursor];
                 switch (test) {
                 case '*':
                     cursor++;
@@ -928,11 +900,11 @@ final class JsonReader implements AutoCloseable {
         throw new EndOfFileException();
     }
 
-    private boolean skipTo(int indicator) throws IOException {
+    private boolean skipTo(final int indicator) throws IOException {
         switch (indicator) {
         case INDICATOR_EOL:
             while (cursor < limit || readToBuffer(1)) {
-                char current = buffer[cursor++];
+                final char current = buffer[cursor++];
                 switch (current) {
                 case '\n':
                     lineAmount++;
@@ -965,7 +937,7 @@ final class JsonReader implements AutoCloseable {
     }
 
     private boolean readToBuffer(int minimum) throws IOException {
-        char[] buffer = this.buffer;
+        final char[] buffer = this.buffer;
         linePosition -= cursor;
         if (limit != cursor) {
             limit -= cursor;
@@ -989,11 +961,11 @@ final class JsonReader implements AutoCloseable {
         return false;
     }
 
-    private boolean isDigit(char character) {
+    private boolean isDigit(final char character) {
         return character >= '0' && character <= '9';
     }
 
-    private boolean isLiteral(char character) throws JsonSyntaxException {
+    private boolean isLiteral(final char character) throws JsonSyntaxException {
         switch (character) {
         case '/':
         case '#':
@@ -1021,7 +993,7 @@ final class JsonReader implements AutoCloseable {
     private JsonScope pop() {
         try {
             return stack.pop();
-        } catch (EmptyStackException exception) {
+        } catch (final EmptyStackException exception) {
             return JsonScope.CLOSED;
         }
     }
@@ -1029,25 +1001,25 @@ final class JsonReader implements AutoCloseable {
     private JsonScope peek() {
         try {
             return stack.top();
-        } catch (EmptyStackException exception) {
+        } catch (final EmptyStackException exception) {
             return JsonScope.CLOSED;
         }
     }
 
-    private JsonSyntaxException wrongSyntax(String message) {
+    private JsonSyntaxException wrongSyntax(final String message) {
         return new JsonSyntaxException(applyLocation(message));
     }
 
-    private IllegalStateException illegalState(JsonToken expected, JsonState state) {
+    private IllegalStateException illegalState(final JsonToken expected, final JsonState state) {
         return illegalState(expected, state, false);
     }
 
-    private IllegalStateException illegalState(JsonToken expected, JsonState state, boolean actual) {
+    private IllegalStateException illegalState(final JsonToken expected, final JsonState state, final boolean actual) {
         return new IllegalStateException(
             applyLocation("Expected " + expected.name() + " but was " + (actual ? state.asToken() : state.asToken()).name()));
     }
 
-    private String applyLocation(String message) {
+    private String applyLocation(final String message) {
         return message + getLocation();
     }
 
