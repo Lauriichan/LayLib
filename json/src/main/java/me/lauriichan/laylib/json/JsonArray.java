@@ -20,7 +20,7 @@ public final class JsonArray implements IJson<List<IJson<?>>>, List<IJson<?>>, R
         add(index, IJson.of(object));
     }
 
-    public IJson<?> set(final int index, final Object object) {
+    public IJson<?> setAny(final int index, final Object object) {
         return set(index, IJson.of(object));
     }
 
