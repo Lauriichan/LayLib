@@ -2,6 +2,7 @@ package me.lauriichan.laylib.json;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Optional;
 
 import me.lauriichan.laylib.json.util.PrimitiveMapper;
 
@@ -140,6 +141,14 @@ public interface IJson<V> {
 
     default JsonBoolean asJsonBoolean() {
         return (JsonBoolean) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    default <J extends IJson<?>> Optional<J> as(final Class<J> jsonType) {
+        if (jsonType.isAssignableFrom(getClass())) {
+            return Optional.of((J) this);
+        }
+        return Optional.empty();
     }
 
 }
