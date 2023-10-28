@@ -1,0 +1,47 @@
+package me.lauriichan.laylib.json;
+
+public final class JsonString implements IJson<String> {
+
+    private final String string;
+    
+    public JsonString(String string) {
+        this.string = string;
+    }
+
+    /*
+     * Object override
+     */
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof String) {
+            return string.equals(obj);
+        } else if (obj instanceof JsonString) {
+            return string == ((JsonString) obj).value();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return string.hashCode();
+    }
+    
+    /*
+     * IJson implementation
+     */
+    
+    @Override
+    public JsonType type() {
+        return JsonType.STRING;
+    }
+
+    @Override
+    public String value() {
+        return string;
+    }
+
+}
