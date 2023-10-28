@@ -10,7 +10,7 @@ public final class PrimitiveMapper {
     private static final Object2ObjectMap<Class<?>, Class<?>> primitiveMapping, complexMapping;
 
     static {
-        Object2ObjectArrayMap<Class<?>, Class<?>> map = new Object2ObjectArrayMap<>();
+        Object2ObjectArrayMap<Class<?>, Class<?>> map = new Object2ObjectArrayMap<>(8);
         map.put(void.class, Void.class);
         map.put(boolean.class, Boolean.class);
         map.put(byte.class, Byte.class);
@@ -20,7 +20,7 @@ public final class PrimitiveMapper {
         map.put(float.class, Float.class);
         map.put(double.class, Double.class);
         primitiveMapping = Object2ObjectMaps.unmodifiable(map);
-        map = new Object2ObjectArrayMap<>();
+        map = new Object2ObjectArrayMap<>(8);
         for (final Entry<Class<?>, Class<?>> entry : primitiveMapping.object2ObjectEntrySet()) {
             map.put(entry.getValue(), entry.getKey());
         }
