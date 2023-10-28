@@ -13,6 +13,10 @@ public final class JsonObject
 
     private final Object2ObjectLinkedOpenHashMap<String, IJson<?>> map = new Object2ObjectLinkedOpenHashMap<>();
 
+    public IJson<?> put(final String key, final Object value) {
+        return map.put(key, IJson.of(value));
+    }
+
     /*
      * IJson implementation
      */

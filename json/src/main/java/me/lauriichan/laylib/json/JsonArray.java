@@ -12,6 +12,18 @@ public final class JsonArray implements IJson<List<IJson<?>>>, List<IJson<?>>, R
 
     private final ObjectArrayList<IJson<?>> list = new ObjectArrayList<>();
 
+    public boolean addAny(final Object object) {
+        return add(IJson.of(object));
+    }
+
+    public void addAny(final int index, final Object object) {
+        add(index, IJson.of(object));
+    }
+
+    public IJson<?> set(final int index, final Object object) {
+        return set(index, IJson.of(object));
+    }
+
     public boolean contains(final int index, final JsonType type) {
         final IJson<?> value = get(index);
         return value == null || !type.hasType(value);
@@ -97,7 +109,14 @@ public final class JsonArray implements IJson<List<IJson<?>>>, List<IJson<?>>, R
 
     @Override
     public boolean remove(final Object o) {
-        return list.remove(o);
+        if (o instanceof IJson) {
+            return list.remove(o);
+        }
+        try {
+            return list.remove(IJson.of(o));
+        } catch (IllegalArgumentException iae) {
+            return false;
+        }
     }
 
     @Override
@@ -152,12 +171,26 @@ public final class JsonArray implements IJson<List<IJson<?>>>, List<IJson<?>>, R
 
     @Override
     public int indexOf(final Object o) {
-        return list.indexOf(o);
+        if (o instanceof IJson) {
+            return list.indexOf(o);
+        }
+        try {
+            return list.indexOf(IJson.of(o));
+        } catch (IllegalArgumentException iae) {
+            return -1;
+        }
     }
 
     @Override
     public int lastIndexOf(final Object o) {
-        return list.lastIndexOf(o);
+        if (o instanceof IJson) {
+            return list.lastIndexOf(o);
+        }
+        try {
+            return list.lastIndexOf(IJson.of(o));
+        } catch (IllegalArgumentException iae) {
+            return -1;
+        }
     }
 
     @Override
