@@ -83,7 +83,7 @@ public final class JsonParser {
         String key = null;
         JsonToken token;
         IJson<?> json = IJson.NULL;
-        int state = 0; // 0 = none / 1 = object / 2 = array
+        int state = 0; // 0 = none / 1 = array / 2 = object
         loop:
         while (true) {
             if (!reader.hasNext()) {
@@ -95,8 +95,10 @@ public final class JsonParser {
             token = reader.next();
             switch (token) {
             case START_OBJECT:
-                keyStack.push(key);
-                key = null;
+                if (state != 0) {
+                    keyStack.push(key);
+                    key = null;
+                }
                 reader.beginObject();
                 stack.push(new JsonObject());
                 state = 2;
@@ -118,8 +120,10 @@ public final class JsonParser {
                 }
                 break;
             case START_ARRAY:
-                keyStack.push(key);
-                key = null;
+                if (state != 0) {
+                    keyStack.push(key);
+                    key = null;
+                }
                 reader.beginArray();
                 stack.push(new JsonArray());
                 state = 1;
