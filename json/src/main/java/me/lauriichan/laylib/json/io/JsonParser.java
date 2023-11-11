@@ -120,10 +120,8 @@ public final class JsonParser {
                 }
                 break;
             case START_ARRAY:
-                if (key != null) {
-                    keyStack.push(key);
-                    key = null;
-                }
+                keyStack.push(key);
+                key = null;
                 reader.beginArray();
                 stack.push(new JsonArray());
                 state = 1;
