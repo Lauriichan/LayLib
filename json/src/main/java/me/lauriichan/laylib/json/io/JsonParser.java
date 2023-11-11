@@ -95,10 +95,8 @@ public final class JsonParser {
             token = reader.next();
             switch (token) {
             case START_OBJECT:
-                if (key != null) {
-                    keyStack.push(key);
-                    key = null;
-                }
+                keyStack.push(key);
+                key = null;
                 reader.beginObject();
                 stack.push(new JsonObject());
                 state = 2;
@@ -114,7 +112,7 @@ public final class JsonParser {
                 json = stack.pop();
                 if (!keyStack.isEmpty()) {
                     key = keyStack.pop();
-                    state = 2;
+                    state = key == null ? 1 : 2;
                 } else {
                     state = 0;
                 }
@@ -131,7 +129,7 @@ public final class JsonParser {
                 json = stack.pop();
                 if (!keyStack.isEmpty()) {
                     key = keyStack.pop();
-                    state = 2;
+                    state = key == null ? 1 : 2;
                 } else {
                     state = 0;
                 }
