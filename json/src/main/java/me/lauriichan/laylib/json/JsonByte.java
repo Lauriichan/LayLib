@@ -9,8 +9,9 @@ public final class JsonByte implements IJsonNumber<Byte> {
 
     static {
         int index = 0;
-        for (byte value = Byte.MIN_VALUE; value <= Byte.MAX_VALUE; value++) {
-            BYTES[index++] = new JsonByte(value);
+        for (byte value = Byte.MIN_VALUE; index < BYTES.length; value++, index++) {
+            System.out.println(value);
+            BYTES[index] = new JsonByte(value);
         }
     }
 
