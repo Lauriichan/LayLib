@@ -95,8 +95,16 @@ public interface IJson<V> {
 
     V value();
 
+    default boolean isJson() {
+        return type().isType(JsonType.JSON);
+    }
+
+    default boolean isPrimitive() {
+        return type().isType(JsonType.PRIMITIVE);
+    }
+
     default boolean isArray() {
-        return type() == JsonType.ARRAY;
+        return type().isType(JsonType.ARRAY);
     }
 
     default JsonArray asJsonArray() {
@@ -104,7 +112,7 @@ public interface IJson<V> {
     }
 
     default boolean isObject() {
-        return type() == JsonType.OBJECT;
+        return type().isType(JsonType.OBJECT);
     }
 
     default JsonObject asJsonObject() {
@@ -112,7 +120,7 @@ public interface IJson<V> {
     }
 
     default boolean isNull() {
-        return type() == JsonType.NULL;
+        return type().isType(JsonType.NULL);
     }
 
     default JsonNull asJsonNull() {
@@ -120,7 +128,7 @@ public interface IJson<V> {
     }
 
     default boolean isString() {
-        return type() == JsonType.STRING;
+        return type().isType(JsonType.STRING);
     }
 
     default JsonString asJsonString() {
@@ -128,7 +136,7 @@ public interface IJson<V> {
     }
 
     default boolean isNumber() {
-        return type() == JsonType.NUMBER;
+        return type().isType(JsonType.NUMBER);
     }
 
     default IJsonNumber<?> asJsonNumber() {
@@ -136,7 +144,7 @@ public interface IJson<V> {
     }
 
     default boolean isBoolean() {
-        return type() == JsonType.BOOLEAN;
+        return type().isType(JsonType.BOOLEAN);
     }
 
     default JsonBoolean asJsonBoolean() {
