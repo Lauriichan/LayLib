@@ -10,7 +10,7 @@ public final class IntegerArgument extends NumberArgument<Integer> {
     }
 
     @Override
-    protected Integer read(String input) throws IllegalArgumentException {
+    protected Integer read(String input, IArgumentMap map) throws IllegalArgumentException {
         try {
             return Integer.valueOf(input);
         } catch (NumberFormatException exp) {

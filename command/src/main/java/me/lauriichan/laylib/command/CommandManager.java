@@ -141,10 +141,18 @@ public final class CommandManager {
     }
 
     public void handleProcessInput(Actor<?> actor, CommandProcess process, String input) {
-        handleProcessInput(actor, process, input, false);
+        handleProcessInput(actor, process, input, EmptyArgumentMap.INSTANCE, false);
+    }
+
+    public void handleProcessInput(Actor<?> actor, CommandProcess process, String input, IArgumentMap map) {
+        handleProcessInput(actor, process, input, map, false);
     }
 
     public void handleProcessInput(Actor<?> actor, CommandProcess process, String input, boolean suggestion) {
+        handleProcessInput(actor, process, input, EmptyArgumentMap.INSTANCE, suggestion);
+    }
+
+    public void handleProcessInput(Actor<?> actor, CommandProcess process, String input, IArgumentMap map, boolean suggestion) {
         if (input == null) {
             return;
         }
@@ -164,7 +172,7 @@ public final class CommandManager {
             actor.sendTranslatedMessage("command.process.input.failed", Key.of("error", exp.getMessage()),
                 Key.of("argument.type", ClassUtil.getClassName(argument.getArgumentType())));
             Suggestions suggestions = new Suggestions();
-            argument.getType().suggest(actor, input, suggestions);
+            argument.getType().suggest(actor, input, suggestions, map);
             if (!suggestions.hasSuggestions()) {
                 return;
             }

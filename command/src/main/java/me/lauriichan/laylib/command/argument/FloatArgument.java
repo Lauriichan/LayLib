@@ -10,7 +10,7 @@ public final class FloatArgument extends NumberArgument<Float> {
     }
 
     @Override
-    protected Float read(String input) throws IllegalArgumentException {
+    protected Float read(String input, IArgumentMap map) throws IllegalArgumentException {
         try {
             return Float.valueOf(input);
         } catch (NumberFormatException exp) {

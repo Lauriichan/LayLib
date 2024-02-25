@@ -31,7 +31,7 @@ public final class EnumArgument implements IArgumentType<Enum<?>> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Enum<?> parse(Actor<?> actor, String input) throws IllegalArgumentException {
+    public Enum<?> parse(Actor<?> actor, String input, IArgumentMap map) throws IllegalArgumentException {
         try {
             return Enum.valueOf(type, input.toUpperCase());
         } catch (IllegalArgumentException iae) {
@@ -40,7 +40,7 @@ public final class EnumArgument implements IArgumentType<Enum<?>> {
     }
 
     @Override
-    public void suggest(Actor<?> actor, String input, Suggestions suggestions) {
+    public void suggest(Actor<?> actor, String input, Suggestions suggestions, IArgumentMap map) {
         List<Entry<String, Integer>> list = LevenshteinDistance.rankByDistance(input, values);
         double max = list.stream().map(Entry::getValue).collect(Collectors.summingInt(Integer::intValue));
         for (int index = 0; index < list.size(); index++) {

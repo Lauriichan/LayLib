@@ -10,7 +10,7 @@ public final class LongArgument extends NumberArgument<Long> {
     }
 
     @Override
-    protected Long read(String input) throws IllegalArgumentException {
+    protected Long read(String input, IArgumentMap map) throws IllegalArgumentException {
         try {
             return Long.valueOf(input);
         } catch (NumberFormatException exp) {

@@ -10,7 +10,7 @@ public final class DoubleArgument extends NumberArgument<Double> {
     }
 
     @Override
-    protected Double read(String input) throws IllegalArgumentException {
+    protected Double read(String input, IArgumentMap map) throws IllegalArgumentException {
         try {
             return Double.valueOf(input);
         } catch (NumberFormatException exp) {

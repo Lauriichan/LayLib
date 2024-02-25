@@ -10,7 +10,7 @@ public final class ByteArgument extends NumberArgument<Byte> {
     }
 
     @Override
-    protected Byte read(String input) throws IllegalArgumentException {
+    protected Byte read(String input, IArgumentMap map) throws IllegalArgumentException {
         try {
             return Byte.valueOf(input);
         } catch (NumberFormatException exp) {

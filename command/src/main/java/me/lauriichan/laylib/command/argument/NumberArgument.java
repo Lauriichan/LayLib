@@ -3,6 +3,7 @@ package me.lauriichan.laylib.command.argument;
 import java.util.Objects;
 
 import me.lauriichan.laylib.command.Actor;
+import me.lauriichan.laylib.command.IArgumentMap;
 import me.lauriichan.laylib.command.IArgumentType;
 import me.lauriichan.laylib.command.Suggestions;
 
@@ -30,8 +31,8 @@ public abstract class NumberArgument<E extends Number> implements IArgumentType<
     }
 
     @Override
-    public E parse(Actor<?> actor, String input) throws IllegalArgumentException {
-        E value = read(input.trim());
+    public E parse(Actor<?> actor, String input, IArgumentMap map) throws IllegalArgumentException {
+        E value = read(input.trim(), map);
         if (compare(value, minimum) < 0) {
             throw new IllegalArgumentException("Value lower than " + minimum.toString());
         }
@@ -42,10 +43,10 @@ public abstract class NumberArgument<E extends Number> implements IArgumentType<
     }
 
     @Override
-    public void suggest(Actor<?> actor, String input, Suggestions suggestions) {
+    public void suggest(Actor<?> actor, String input, Suggestions suggestions, IArgumentMap map) {
         E value;
         try {
-            value = read(input);
+            value = read(input, map);
         } catch (IllegalArgumentException exp) {
             suggestions.suggest(0.6d, maximum);
             suggestions.suggest(0.4d, minimum);
@@ -69,7 +70,7 @@ public abstract class NumberArgument<E extends Number> implements IArgumentType<
         }
     }
 
-    protected abstract E read(String input) throws IllegalArgumentException;
+    protected abstract E read(String input, IArgumentMap map) throws IllegalArgumentException;
 
     protected abstract int compare(E var1, E var2);
 

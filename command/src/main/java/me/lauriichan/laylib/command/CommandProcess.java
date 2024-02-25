@@ -25,12 +25,16 @@ public final class CommandProcess {
     }
 
     public NodeArgument findNext(Actor<?> actor) {
+        return findNext(actor, EmptyArgumentMap.INSTANCE);
+    }
+
+    public NodeArgument findNext(Actor<?> actor, IArgumentMap map) {
         while (index < values.length) {
             NodeArgument argument = action.getArguments().get(index);
             if (!argument.isProvided()) {
                 return argument;
             }
-            values[argument.getArgumentIndex()] = argument.getType().parse(actor, null);
+            values[argument.getArgumentIndex()] = argument.getType().parse(actor, null, map);
             index++;
         }
         return null;
@@ -46,13 +50,17 @@ public final class CommandProcess {
         return false;
     }
 
-    public void provide(Actor<?> actor, String input) {
+    public void provide(Actor<?> actor, String input, IArgumentMap map) {
         NodeArgument argument = findNext(actor);
         if (argument == null) {
             return;
         }
-        values[argument.getArgumentIndex()] = argument.getType().parse(actor, input);
+        values[argument.getArgumentIndex()] = argument.getType().parse(actor, input, map);
         index++;
+    }
+
+    public void provide(Actor<?> actor, String input) {
+        provide(actor, input, EmptyArgumentMap.INSTANCE);
     }
 
     public String getLabel() {

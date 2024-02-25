@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import me.lauriichan.laylib.command.Actor;
+import me.lauriichan.laylib.command.IArgumentMap;
 import me.lauriichan.laylib.command.IArgumentType;
 import me.lauriichan.laylib.command.Suggestions;
 import me.lauriichan.laylib.command.util.LevenshteinDistance;
@@ -22,7 +23,7 @@ public final class BooleanArgument implements IArgumentType<Boolean> {
     }
 
     @Override
-    public Boolean parse(Actor<?> actor, String input) throws IllegalArgumentException {
+    public Boolean parse(Actor<?> actor, String input, IArgumentMap map) throws IllegalArgumentException {
         input = input.toLowerCase();
         if (TRUE.contains(input)) {
             return true;
@@ -34,7 +35,7 @@ public final class BooleanArgument implements IArgumentType<Boolean> {
     }
 
     @Override
-    public void suggest(Actor<?> actor, String input, Suggestions suggestions) {
+    public void suggest(Actor<?> actor, String input, Suggestions suggestions, IArgumentMap map) {
         List<Entry<String, Integer>> list = LevenshteinDistance.rankByDistance(input.toLowerCase(), ALL);
         double max = list.stream().map(Entry::getValue).collect(Collectors.summingInt(Integer::intValue));
         for (int index = 0; index < list.size(); index++) {

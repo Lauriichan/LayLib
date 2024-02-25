@@ -10,7 +10,7 @@ public final class ShortArgument extends NumberArgument<Short> {
     }
 
     @Override
-    protected Short read(String input) throws IllegalArgumentException {
+    protected Short read(String input, IArgumentMap map) throws IllegalArgumentException {
         try {
             return Short.valueOf(input);
         } catch (NumberFormatException exp) {

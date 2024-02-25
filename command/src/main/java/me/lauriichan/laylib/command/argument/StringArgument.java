@@ -31,7 +31,7 @@ public final class StringArgument implements IArgumentType<String> {
     }
 
     @Override
-    public String parse(Actor<?> actor, String input) throws IllegalArgumentException {
+    public String parse(Actor<?> actor, String input, IArgumentMap map) throws IllegalArgumentException {
         if (!collection) {
             return input;
         }
@@ -42,7 +42,7 @@ public final class StringArgument implements IArgumentType<String> {
     }
 
     @Override
-    public void suggest(Actor<?> actor, String input, Suggestions suggestions) {
+    public void suggest(Actor<?> actor, String input, Suggestions suggestions, IArgumentMap map) {
         if (!collection) {
             return;
         }
