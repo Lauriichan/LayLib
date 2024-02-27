@@ -2,6 +2,7 @@ package me.lauriichan.laylib.json;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Objects;
 import java.util.Optional;
 
 import me.lauriichan.laylib.json.util.PrimitiveMapper;
@@ -17,7 +18,13 @@ public interface IJson<V> {
         return state ? TRUE : FALSE;
     }
 
+    static JsonBoolean of(final Boolean state) {
+        Objects.requireNonNull(state, "String can't be null");
+        return state ? TRUE : FALSE;
+    }
+
     static JsonString of(final String string) {
+        Objects.requireNonNull(string, "String can't be null");
         return new JsonString(string);
     }
 
@@ -25,7 +32,17 @@ public interface IJson<V> {
         return JsonByte.of(value);
     }
 
+    static JsonByte of(final Byte value) {
+        Objects.requireNonNull(value, "Byte can't be null");
+        return JsonByte.of(value);
+    }
+
     static JsonShort of(final short value) {
+        return new JsonShort(value);
+    }
+
+    static JsonShort of(final Short value) {
+        Objects.requireNonNull(value, "Short can't be null");
         return new JsonShort(value);
     }
 
@@ -33,11 +50,22 @@ public interface IJson<V> {
         return new JsonInteger(value);
     }
 
+    static JsonInteger of(final Integer value) {
+        Objects.requireNonNull(value, "Integer can't be null");
+        return new JsonInteger(value);
+    }
+
     static JsonLong of(final long value) {
         return new JsonLong(value);
     }
 
+    static JsonLong of(final Long value) {
+        Objects.requireNonNull(value, "Long can't be null");
+        return new JsonLong(value);
+    }
+
     static JsonBigInteger of(final BigInteger value) {
+        Objects.requireNonNull(value, "BigInteger can't be null");
         return new JsonBigInteger(value);
     }
 
@@ -45,11 +73,22 @@ public interface IJson<V> {
         return new JsonFloat(value);
     }
 
+    static JsonFloat of(final Float value) {
+        Objects.requireNonNull(value, "Float can't be null");
+        return new JsonFloat(value);
+    }
+
     static JsonDouble of(final double value) {
         return new JsonDouble(value);
     }
 
+    static JsonDouble of(final Double value) {
+        Objects.requireNonNull(value, "Double can't be null");
+        return new JsonDouble(value);
+    }
+
     static JsonBigDecimal of(final BigDecimal value) {
+        Objects.requireNonNull(value, "BigDecimal can't be null");
         return new JsonBigDecimal(value);
     }
 
@@ -58,10 +97,10 @@ public interface IJson<V> {
             return JsonNull.NULL;
         }
         final Class<?> type = PrimitiveMapper.fromPrimitive(object.getClass());
-        if (object == Boolean.class) {
-            return of(object);
+        if (type == Boolean.class) {
+            return of((Boolean) object);
         }
-        if (object == Byte.class) {
+        if (type == Byte.class) {
             return JsonByte.of((Byte) object);
         }
         if (type == String.class) {
