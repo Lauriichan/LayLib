@@ -64,6 +64,9 @@ public final class NodeHelper {
             case Param.TYPE_STRING:
                 map.set(param.name(), param.stringValue());
                 break;
+            case Param.TYPE_BOOLEAN:
+                map.set(param.name(), param.booleanValue());
+                break;
             case Param.TYPE_BYTE:
                 map.set(param.name(), param.byteValue());
                 break;
@@ -87,6 +90,9 @@ public final class NodeHelper {
                 break;
             case Param.TYPE_STRING_ARRAY:
                 map.set(param.name(), param.stringArrayValue());
+                break;
+            case Param.TYPE_BOOLEAN_ARRAY:
+                map.set(param.name(), param.booleanArrayValue());
                 break;
             case Param.TYPE_BYTE_ARRAY:
                 map.set(param.name(), param.byteArrayValue());

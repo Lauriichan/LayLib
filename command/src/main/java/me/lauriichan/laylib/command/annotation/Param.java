@@ -11,27 +11,32 @@ import java.lang.annotation.Target;
 public @interface Param {
 
     public static final int TYPE_STRING = 0;
-    public static final int TYPE_BYTE = 1;
-    public static final int TYPE_SHORT = 2;
-    public static final int TYPE_INT = 3;
-    public static final int TYPE_LONG = 4;
-    public static final int TYPE_FLOAT = 5;
-    public static final int TYPE_DOUBLE = 6;
-    public static final int TYPE_CLASS = 7;
-    public static final int TYPE_STRING_ARRAY = 8;
-    public static final int TYPE_BYTE_ARRAY = 9;
-    public static final int TYPE_SHORT_ARRAY = 10;
-    public static final int TYPE_INT_ARRAY = 11;
-    public static final int TYPE_LONG_ARRAY = 12;
-    public static final int TYPE_FLOAT_ARRAY = 13;
-    public static final int TYPE_DOUBLE_ARRAY = 14;
-    public static final int TYPE_CLASS_ARRAY = 15;
+    public static final int TYPE_BOOLEAN = 1;
+    public static final int TYPE_BYTE = 2;
+    public static final int TYPE_SHORT = 3;
+    public static final int TYPE_INT = 4;
+    public static final int TYPE_LONG = 5;
+    public static final int TYPE_FLOAT = 6;
+    public static final int TYPE_DOUBLE = 7;
+    public static final int TYPE_CLASS = 8;
+    
+    public static final int TYPE_STRING_ARRAY = 10;
+    public static final int TYPE_BOOLEAN_ARRAY = 11;
+    public static final int TYPE_BYTE_ARRAY = 12;
+    public static final int TYPE_SHORT_ARRAY = 13;
+    public static final int TYPE_INT_ARRAY = 14;
+    public static final int TYPE_LONG_ARRAY = 15;
+    public static final int TYPE_FLOAT_ARRAY = 16;
+    public static final int TYPE_DOUBLE_ARRAY = 17;
+    public static final int TYPE_CLASS_ARRAY = 18;
 
     String name();
 
     int type();
 
     String stringValue() default "";
+    
+    boolean booleanValue() default false;
 
     byte byteValue() default 0;
 
@@ -48,6 +53,8 @@ public @interface Param {
     Class<?> classValue() default Void.class;
 
     String[] stringArrayValue() default {};
+
+    boolean[] booleanArrayValue() default {};
 
     byte[] byteArrayValue() default {};
 
