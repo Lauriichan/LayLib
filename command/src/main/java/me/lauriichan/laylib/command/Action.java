@@ -18,7 +18,7 @@ public final class Action {
         }
 
         public boolean isClick() {
-            return this != HOVER_TEXT;
+            return !isHover();
         }
     }
 

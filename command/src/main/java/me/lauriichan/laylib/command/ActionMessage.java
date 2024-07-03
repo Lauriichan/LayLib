@@ -24,11 +24,11 @@ public final class ActionMessage {
     }
 
     public ActionMessage action(Action action) {
-        if (action.isClick()) {
-            this.clickAction = action;
+        if (action.isHover()) {
+            this.hoverAction = action;
             return this;
         }
-        this.hoverAction = action;
+        this.clickAction = action;
         return this;
     }
 
