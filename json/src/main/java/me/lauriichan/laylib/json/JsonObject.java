@@ -74,6 +74,24 @@ public final class JsonObject
         return json.asBoolean();
     }
 
+    public boolean getAsNumericBoolean(final String key) {
+        return getAsNumericBoolean(key, false);
+    }
+
+    public boolean getAsNumericBoolean(final String key, final boolean fallback) {
+        IJson<?> json = map.get(key);
+        if (json == null) {
+            return fallback;
+        }
+        if (json.isBoolean()) {
+            return json.asBoolean();
+        }
+        if (json.isNumber()) {
+            return json.asNumber().byteValue() != 0;
+        }
+        return fallback;
+    }
+
     public String getAsString(final String key) {
         return getAsString(key, null);
     }
