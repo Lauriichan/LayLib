@@ -100,11 +100,11 @@ public interface IJson<V> {
         if (type == Boolean.class) {
             return of((Boolean) object);
         }
-        if (type == Byte.class) {
-            return JsonByte.of((Byte) object);
-        }
         if (type == String.class) {
             return new JsonString((String) object);
+        }
+        if (type == Byte.class) {
+            return JsonByte.of((Byte) object);
         }
         if (type == Short.class) {
             return new JsonShort((Short) object);
@@ -133,6 +133,10 @@ public interface IJson<V> {
     JsonType type();
 
     V value();
+    
+    default boolean isType(JsonType type) {
+        return type().isType(type);
+    }
 
     default boolean isJson() {
         return type().isType(JsonType.JSON);
@@ -169,6 +173,10 @@ public interface IJson<V> {
     default boolean isString() {
         return type().isType(JsonType.STRING);
     }
+    
+    default String asString() {
+        return (String) value();
+    }
 
     default JsonString asJsonString() {
         return (JsonString) this;
@@ -177,6 +185,10 @@ public interface IJson<V> {
     default boolean isNumber() {
         return type().isType(JsonType.NUMBER);
     }
+    
+    default Number asNumber() {
+        return (Number) value();
+    }
 
     default IJsonNumber<?> asJsonNumber() {
         return (IJsonNumber<?>) this;
@@ -184,6 +196,10 @@ public interface IJson<V> {
 
     default boolean isBoolean() {
         return type().isType(JsonType.BOOLEAN);
+    }
+    
+    default boolean asBoolean() {
+        return ((Boolean) value()).booleanValue();
     }
 
     default JsonBoolean asJsonBoolean() {

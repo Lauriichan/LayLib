@@ -1,8 +1,11 @@
 package me.lauriichan.laylib.json;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
@@ -12,6 +15,168 @@ public final class JsonObject
     implements IJson<Map<String, IJson<?>>>, Map<String, IJson<?>>, Iterable<Object2ObjectMap.Entry<String, IJson<?>>> {
 
     private final Object2ObjectLinkedOpenHashMap<String, IJson<?>> map = new Object2ObjectLinkedOpenHashMap<>();
+
+    public boolean has(final String key) {
+        return map.containsKey(key);
+    }
+
+    public boolean has(final String key, final JsonType type) {
+        IJson<?> value = map.get(key);
+        return value != null && value.isType(type);
+    }
+
+    public boolean isNull(final String key) {
+        IJson<?> value = map.get(key);
+        return value == null || value.isNull();
+    }
+
+    public <J extends IJson<?>> J getAs(final String key, final Class<J> jsonType) {
+        return getAs(key, jsonType, null);
+    }
+
+    public <J extends IJson<?>> J getAs(final String key, final Class<J> jsonType, final J fallback) {
+        return getAsOptional(key, jsonType).orElse(fallback);
+    }
+
+    public <J extends IJson<?>> Optional<J> getAsOptional(final String key, final Class<J> jsonType) {
+        IJson<?> json = map.get(key);
+        if (json == null) {
+            return Optional.empty();
+        }
+        return json.as(jsonType);
+    }
+
+    public JsonObject getAsObject(final String key) {
+        IJson<?> json = map.get(key);
+        if (json == null || !json.isObject()) {
+            return null;
+        }
+        return json.asJsonObject();
+    }
+
+    public JsonArray getAsArray(final String key) {
+        IJson<?> json = map.get(key);
+        if (json == null || !json.isArray()) {
+            return null;
+        }
+        return json.asJsonArray();
+    }
+
+    public boolean getAsBoolean(final String key) {
+        return getAsBoolean(key, false);
+    }
+
+    public boolean getAsBoolean(final String key, final boolean fallback) {
+        IJson<?> json = map.get(key);
+        if (json == null || !json.isBoolean()) {
+            return fallback;
+        }
+        return json.asBoolean();
+    }
+
+    public String getAsString(final String key) {
+        return getAsString(key, null);
+    }
+
+    public String getAsString(final String key, final String fallback) {
+        IJson<?> json = map.get(key);
+        if (json == null || !json.isString()) {
+            return fallback;
+        }
+        return json.asString();
+    }
+
+    public Number getAsNumber(final String key) {
+        return getAsNumber(key, 0);
+    }
+
+    public Number getAsNumber(final String key, final Number fallback) {
+        IJson<?> json = map.get(key);
+        if (json == null || !json.isNumber()) {
+            return fallback;
+        }
+        return json.asNumber();
+    }
+
+    public byte getAsByte(final String key) {
+        return getAsNumber(key).byteValue();
+    }
+
+    public byte getAsByte(final String key, final byte fallback) {
+        return getAsNumber(key, fallback).byteValue();
+    }
+
+    public short getAsShort(final String key) {
+        return getAsNumber(key).shortValue();
+    }
+
+    public short getAsShort(final String key, final short fallback) {
+        return getAsNumber(key, fallback).shortValue();
+    }
+
+    public int getAsInt(final String key) {
+        return getAsNumber(key).intValue();
+    }
+
+    public int getAsInt(final String key, final int fallback) {
+        return getAsNumber(key, fallback).intValue();
+    }
+
+    public long getAsLong(final String key) {
+        return getAsNumber(key).longValue();
+    }
+
+    public long getAsLong(final String key, final long fallback) {
+        return getAsNumber(key, fallback).longValue();
+    }
+
+    public float getAsFloat(final String key) {
+        return getAsNumber(key).floatValue();
+    }
+
+    public float getAsFloat(final String key, final float fallback) {
+        return getAsNumber(key, fallback).floatValue();
+    }
+
+    public double getAsDouble(final String key) {
+        return getAsNumber(key).doubleValue();
+    }
+
+    public double getAsDouble(final String key, final double fallback) {
+        return getAsNumber(key, fallback).doubleValue();
+    }
+
+    public BigInteger getAsBigInt(final String key) {
+        return getAsBigInt(key, BigInteger.ZERO);
+    }
+
+    public BigInteger getAsBigInt(final String key, final Number fallback) {
+        return getAsBigInt(key, fallback == null ? null : BigInteger.valueOf(fallback.longValue()));
+    }
+
+    public BigInteger getAsBigInt(final String key, final BigInteger fallback) {
+        IJson<?> json = map.get(key);
+        if (json == null || !json.isNumber()) {
+            return fallback;
+        }
+        return json.asJsonNumber().asBigInteger();
+    }
+
+    public BigDecimal getAsBigDecimal(final String key) {
+        return getAsBigDecimal(key, BigDecimal.ZERO);
+    }
+
+    public BigDecimal getAsBigDecimal(final String key, final Number fallback) {
+        return getAsBigDecimal(key, fallback == null ? null : BigDecimal.valueOf(fallback.doubleValue()));
+    }
+
+    public BigDecimal getAsBigDecimal(final String key, final BigDecimal fallback) {
+        IJson<?> json = map.get(key);
+        if (json == null || !json.isNumber()) {
+            return fallback;
+        }
+        return json.asJsonNumber().asBigDecimal();
+    }
 
     public IJson<?> put(final String key, final Object value) {
         return map.put(key, IJson.of(value));
