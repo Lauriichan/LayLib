@@ -20,7 +20,6 @@ jobs:
     - name: Update Maven Project version
       run: |
         mvn versions:set -DnewVersion='${{env.RELEASE_VERSION}}-SNAPSHOT'
-        mvn versions:update-child-modules
     - name: Build and publish
       run: mvn deploy -s ${{ github.workspace }}/.m2/settings.xml -P snapshot
       env:
