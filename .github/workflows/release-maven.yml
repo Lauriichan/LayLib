@@ -16,4 +16,7 @@ jobs:
         java-version: '16'
         distribution: 'adopt'
     - name: Build and publish to GitHub Packages
-      run: mvn deploy -s ${{ github.workspace }}/.m2/settings.xml
+      run: mvn deploy -s ${{ github.workspace }}/.m2/settings.xml -P release
+      env:
+        REPO_USER: ${{ secrets.REPO_USER }}
+        REPO_SECRET: ${{ secrets.REPO_SECRET }}
