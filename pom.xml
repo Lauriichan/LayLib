@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.lauriichan.laylib</groupId>
     <artifactId>laylib-parent</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <packaging>pom</packaging>
     <name>LayLib</name>
     <modules>
@@ -26,13 +26,28 @@
         </license>
     </licenses>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub OWNER Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/Lauriichan/LayLib</url>
-        </repository>
-    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <distributionManagement>
+                <repository>
+                    <id>lauriichan</id>
+                    <name>Lauriichan Maven Repository (Release)</name>
+                    <url>https://maven.lauriichan.me/release</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>snapshot</id>
+            <distributionManagement>
+                <repository>
+                    <id>lauriichan</id>
+                    <name>Lauriichan Maven Repository (Snapshots)</name>
+                    <url>https://maven.lauriichan.me/snapshot</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 
     <dependencies>
         <!-- Test -->

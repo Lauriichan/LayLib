@@ -15,14 +15,5 @@ jobs:
       with:
         java-version: '16'
         distribution: 'adopt'
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
     - name: Build and publish to GitHub Packages
       run: mvn deploy -s ${{ github.workspace }}/.m2/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_USER: ${{ github.repository_owner }}

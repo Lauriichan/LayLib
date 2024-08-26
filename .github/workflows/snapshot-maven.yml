@@ -14,12 +14,6 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
     - name: Set Release version env variable
       run: |
         echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
@@ -27,8 +21,5 @@ jobs:
       run: |
         mvn versions:set -DnewVersion='${{env.RELEASE_VERSION}}-SNAPSHOT'
         mvn versions:update-child-modules
-    - name: Build and publish to GitHub Packages
+    - name: Build and publish
       run: mvn deploy -s ${{ github.workspace }}/.m2/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-        GITHUB_USER: ${{ github.repository_owner }}
