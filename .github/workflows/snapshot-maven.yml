@@ -22,6 +22,3 @@ jobs:
         mvn versions:set -DnewVersion='${{env.RELEASE_VERSION}}-SNAPSHOT'
     - name: Build and publish
       run: mvn deploy -s ${{ github.workspace }}/.m2/settings.xml -P snapshot
-      env:
-        REPO_USER: ${{ secrets.REPO_USER }}
-        REPO_SECRET: ${{ secrets.REPO_SECRET }}
