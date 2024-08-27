@@ -2,12 +2,12 @@ package me.lauriichan.laylib.localization.source;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import me.lauriichan.laylib.localization.MessageProvider;
 import me.lauriichan.laylib.reflection.ClassUtil;
 import me.lauriichan.laylib.reflection.JavaAccess;
@@ -18,7 +18,7 @@ public final class AnnotationMessageSource extends MessageSource {
 
     public AnnotationMessageSource(Class<?> clazz, IProviderFactory factory) {
         super(factory);
-        ArrayList<MessageProvider> providers = new ArrayList<>();
+        ObjectArrayList<MessageProvider> providers = new ObjectArrayList<>();
         Field[] fields = ClassUtil.getFields(clazz);
         Collector<CharSequence, ?, String> collector = Collectors.joining("\n");
         for (Field field : fields) {
@@ -36,13 +36,13 @@ public final class AnnotationMessageSource extends MessageSource {
             if (!fieldType.isAssignableFrom(providerType)) {
                 continue;
             }
-            JavaAccess.setStaticValue(field, provider);
+            JavaAccess.PLATFORM.setValue(field, provider);
         }
         this.providers = providers.toArray(MessageProvider[]::new);
     }
 
     @Override
-    public void provide(ArrayList<MessageProvider> providers) {
+    public void provide(ObjectArrayList<MessageProvider> providers) {
         Collections.addAll(providers, this.providers);
     }
 

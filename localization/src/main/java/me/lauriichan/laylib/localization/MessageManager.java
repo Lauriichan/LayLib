@@ -1,15 +1,16 @@
 package me.lauriichan.laylib.localization;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
+import it.unimi.dsi.fastutil.objects.ObjectLists;
 import me.lauriichan.laylib.localization.source.MessageSource;
 
 public class MessageManager {
 
-    protected final ConcurrentHashMap<String, MessageProvider> messages = new ConcurrentHashMap<>();
+    protected final Object2ObjectMap<String, MessageProvider> messages = Object2ObjectMaps.synchronize(new Object2ObjectOpenHashMap<>());
     protected final int maxDepth;
 
     public MessageManager() {
@@ -36,13 +37,13 @@ public class MessageManager {
         return true;
     }
 
-    public List<String> register(MessageSource source) {
+    public ObjectList<String> register(MessageSource source) {
         if (source == null) {
-            return Collections.emptyList();
+            return ObjectLists.emptyList();
         }
-        ArrayList<MessageProvider> providers = new ArrayList<>();
+        ObjectArrayList<MessageProvider> providers = new ObjectArrayList<>();
         source.provide(providers);
-        ArrayList<String> failed = new ArrayList<>();
+        ObjectArrayList<String> failed = new ObjectArrayList<>();
         for (MessageProvider provider : providers) {
             if (provider == null) {
                 continue;
@@ -51,7 +52,7 @@ public class MessageManager {
                 failed.add(provider.getId());
             }
         }
-        return Collections.unmodifiableList(failed);
+        return ObjectLists.unmodifiable(failed);
     }
     
     public String[] getIds() {

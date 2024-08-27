@@ -33,7 +33,8 @@ public final class NodeCommand {
 
     NodeCommand(Class<?> owner, ISimpleLogger logger, ArgumentRegistry registry) {
         this.owner = Objects.requireNonNull(owner, "No owner specified");
-        this.instance = Objects.requireNonNull(JavaAccess.instance(owner), "Couldn't initialize '" + ClassUtil.getClassName(owner) + "'!");
+        // TODO: FIX
+        this.instance = Objects.requireNonNull(JavaAccess.PLATFORM.instance(owner), "Couldn't initialize '" + ClassUtil.getClassName(owner) + "'!");
         Command command = Objects.requireNonNull(ClassUtil.getAnnotation(owner, Command.class), "Command annotation is null");
         String tmpName = command.name().toLowerCase().trim().replace("  ", " ").replace(' ', '_');
         Permission permissionInfo = ClassUtil.getAnnotation(owner, Permission.class);

@@ -1,8 +1,8 @@
 package me.lauriichan.laylib.localization.source;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import me.lauriichan.laylib.localization.MessageProvider;
 
 public final class EnumMessageSource extends MessageSource {
@@ -19,7 +19,7 @@ public final class EnumMessageSource extends MessageSource {
     }
 
     @Override
-    public void provide(ArrayList<MessageProvider> providers) {
+    public void provide(ObjectArrayList<MessageProvider> providers) {
         Collections.addAll(providers, this.providers);
     }
 

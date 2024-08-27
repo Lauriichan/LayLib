@@ -1,8 +1,8 @@
 package me.lauriichan.laylib.localization.source;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import me.lauriichan.laylib.localization.MessageProvider;
 
 public abstract class MessageSource {
@@ -17,6 +17,6 @@ public abstract class MessageSource {
         return factory;
     }
 
-    public abstract void provide(ArrayList<MessageProvider> providers);
+    public abstract void provide(ObjectArrayList<MessageProvider> providers);
 
 }

@@ -227,7 +227,7 @@ public final class CommandManager {
             return true;
         }
         try {
-            JavaAccess.invokeThrows(process.getInstance(), action.getMethod(), process.getValues());
+            JavaAccess.PLATFORM.invoke(process.getInstance(), action.getMethod(), process.getValues());
         } catch (Throwable e) {
             actor.sendTranslatedMessage("command.process.execution.failed", Key.of("command", process.getLabel()),
                 Key.of("error", e.getMessage()));

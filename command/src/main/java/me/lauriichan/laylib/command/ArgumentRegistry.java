@@ -179,9 +179,9 @@ public final class ArgumentRegistry {
                     if (map == null) {
                         map = EmptyArgumentMap.INSTANCE;
                     }
-                    return type.cast(JavaAccess.instanceThrows(constructor, map));
+                    return type.cast(JavaAccess.PLATFORM.invoke(constructor, map));
                 }
-                return type.cast(JavaAccess.instanceThrows(constructor));
+                return type.cast(JavaAccess.PLATFORM.invoke(constructor));
             } catch (Throwable e) {
                 Optional<NotEnoughArgumentsException> exp = ClassUtil.findException(e, NotEnoughArgumentsException.class);
                 if (exp.isEmpty()) {
