@@ -98,6 +98,9 @@ public class MessageManager {
     }
 
     protected String format(String message, String language, Key[] values, int depth) {
+        if (message == null) {
+            return message;
+        }
         if (depth > maxDepth) {
             return message;
         }

@@ -46,7 +46,7 @@ public final class Placeholder {
             if (builder == null) {
                 continue;
             }
-            if (Character.isAlphabetic(character) || character == '.' || character == '#') {
+            if (Character.isAlphabetic(character) || Character.isDigit(character) || character == '.' || character == '-' || character == '_' || character == '#') {
                 builder.append(character);
                 continue;
             }
