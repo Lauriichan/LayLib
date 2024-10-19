@@ -76,7 +76,7 @@ public final class JavaUnsafe {
         unfinalize(field);
         Object base = isStatic ? unsafe.staticFieldBase(field) : instance;
         long offset = isStatic ? unsafe.staticFieldOffset(field) : unsafe.objectFieldOffset(field);
-        value = (value != null ? field.getType().cast(value) : null);
+        value = (value != null ? (field.getType().isPrimitive() ? value : field.getType().cast(value)) : null);
         if (Modifier.isVolatile(field.getModifiers())) {
             unsafe.putObjectVolatile(base, offset, value);
             return;

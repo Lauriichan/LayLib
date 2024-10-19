@@ -79,6 +79,26 @@ public final class StringUtil {
         }
         return output.toString();
     }
+    
+    public static String shortClassName(Class<?> clazz) {
+        return shortenClassName(clazz.getName());
+    }
+
+    public static String shortenClassName(String name) {
+        if (!name.contains(".")) {
+            return name;
+        }
+        String[] parts = name.split("\\.");
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < parts.length - 1; i++) {
+            String part = parts[i];
+            if (part.length() > 2) {
+                part = part.substring(0, 2);
+            }
+            builder.append(part).append('.');
+        }
+        return builder.append(parts[parts.length - 1]).toString();
+    }
 
     public static String stackTraceToString(Throwable throwable) {
         return stackTraceToBuilder(throwable).toString();
