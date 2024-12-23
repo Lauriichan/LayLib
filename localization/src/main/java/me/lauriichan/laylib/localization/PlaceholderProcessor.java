@@ -14,7 +14,7 @@ public final class PlaceholderProcessor implements IMessageProcessor {
         for (int i = 0; i < length; i++) {
             ch = message.charAt(i);
             if (ch == '\\' && i + 1 < length) {
-                nch = message.charAt(i + 1);
+                nch = message.charAt(i += 1);
                 if (nch == '$') {
                     output.append(nch);
                     continue;
