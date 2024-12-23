@@ -39,6 +39,9 @@ public final class PlaceholderProcessor implements IMessageProcessor {
             builder = null;
             output.append(ch);
         }
+        if (builder != null) {
+            processPlaceholder(process, output, builder.substring(1));
+        }
         return output.toString();
     }
 
