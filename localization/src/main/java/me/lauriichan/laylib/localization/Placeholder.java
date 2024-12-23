@@ -33,15 +33,23 @@ public final class Placeholder {
     public static Placeholder[] parse(final String message) {
         final int length = message.length();
         StringBuilder builder = null;
+        boolean escaped = false;
         final HashMap<String, Placeholder> placeholders = new HashMap<>();
         for (int index = 0; index < length; index++) {
             final char character = message.charAt(index);
+            if (character == '\\') {
+                escaped = !escaped;
+            }
             if (character == '$') {
-                if (builder != null) {
-                    build(placeholders, builder.toString());
+                if (!escaped) {
+                    if (builder != null) {
+                        build(placeholders, builder.toString());
+                    }
+                    builder = new StringBuilder().append(character);
+                    continue;
+                } else {
+                    escaped = false;
                 }
-                builder = new StringBuilder().append(character);
-                continue;
             }
             if (builder == null) {
                 continue;
@@ -52,6 +60,7 @@ public final class Placeholder {
             }
             build(placeholders, builder.toString());
             builder = null;
+            escaped = false;
         }
         if (builder != null) {
             build(placeholders, builder.toString());
