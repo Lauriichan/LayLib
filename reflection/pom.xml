@@ -3,7 +3,7 @@
     <parent>
         <groupId>me.lauriichan.laylib</groupId>
         <artifactId>laylib-parent</artifactId>
-        <version>0.4.1-SNAPSHOT</version>
+        <version>0.4.1</version>
     </parent>
     <artifactId>reflection</artifactId>
 </project>
