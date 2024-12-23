@@ -11,6 +11,7 @@ import me.lauriichan.laylib.localization.source.MessageSource;
 public class MessageManager {
 
     protected final Object2ObjectMap<String, MessageProvider> messages = Object2ObjectMaps.synchronize(new Object2ObjectOpenHashMap<>());
+    protected final ObjectList<IMessageProcessor> processors = ObjectLists.synchronize(new ObjectArrayList<>());
     protected final int maxDepth;
 
     public MessageManager() {
@@ -19,6 +20,26 @@ public class MessageManager {
 
     public MessageManager(int maxDepth) {
         this.maxDepth = Math.max(maxDepth, 0);
+        this.processors.add(PlaceholderProcessor.INSTANCE);
+    }
+
+    public ObjectList<IMessageProcessor> processors() {
+        return processors;
+    }
+
+    public void addProcessor(IMessageProcessor processor) {
+        if (processors.contains(processor)) {
+            return;
+        }
+        processors.add(processor);
+    }
+
+    public void removeProcessor(IMessageProcessor processor) {
+        processors.remove(processor);
+    }
+
+    public void clearProcessors() {
+        processors.clear();
     }
 
     public void unregisterAll() {
@@ -54,7 +75,7 @@ public class MessageManager {
         }
         return ObjectLists.unmodifiable(failed);
     }
-    
+
     public String[] getIds() {
         return messages.keySet().toArray(String[]::new);
     }
@@ -90,46 +111,14 @@ public class MessageManager {
         if (message == null) {
             return null;
         }
-        return format(message.value(), message.language(), placeholders, -1);
+        return format(message.value(), message.language(), placeholders);
     }
 
-    public String format(String message, String language, Key... placeholders) {
-        return format(message, language, placeholders, -1);
-    }
-
-    protected String format(String message, String language, Key[] values, int depth) {
-        if (message == null) {
+    public final String format(String message, String language, Key... placeholders) {
+        if (message == null || processors.isEmpty()) {
             return message;
         }
-        if (depth > maxDepth) {
-            return message;
-        }
-        final Placeholder[] placeholders = Placeholder.parse(message);
-        if (placeholders.length == 0) {
-            return message;
-        }
-        for (final Placeholder placeholder : placeholders) {
-            if (placeholder.isMessage()) {
-                final IMessage targetMessage = getMessage(placeholder.getId(), language);
-                if (targetMessage == null) {
-                    continue;
-                }
-                message = placeholder.replace(message, format(targetMessage.value(), language, values, depth + 1));
-                continue;
-            }
-            for (final Key value : values) {
-                if (!value.getKey().equals(placeholder.getId())) {
-                    continue;
-                }
-                String content = value.getValueOrDefault("null").toString();
-                if (!"null".equals(content)) {
-                    content = format(content, language, values, depth + 1);
-                }
-                message = placeholder.replace(message, content);
-                break;
-            }
-        }
-        return message;
+        return new MessageProcess(this, message, language, placeholders, maxDepth).process();
     }
 
 }
