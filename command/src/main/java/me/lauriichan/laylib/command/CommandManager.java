@@ -17,6 +17,7 @@ import me.lauriichan.laylib.command.util.Reference;
 import me.lauriichan.laylib.command.util.Triple;
 import me.lauriichan.laylib.localization.Key;
 import me.lauriichan.laylib.logger.ISimpleLogger;
+import me.lauriichan.laylib.reflection.AccessFailedException;
 import me.lauriichan.laylib.reflection.ClassUtil;
 import me.lauriichan.laylib.reflection.JavaAccess;
 
@@ -228,10 +229,10 @@ public final class CommandManager {
         }
         try {
             JavaAccess.PLATFORM.invoke(process.getInstance(), action.getMethod(), process.getValues());
-        } catch (Throwable e) {
+        } catch (AccessFailedException e) {
             actor.sendTranslatedMessage("command.process.execution.failed", Key.of("command", process.getLabel()),
-                Key.of("error", e.getMessage()));
-            logger.debug("Failed to execute command '{0}'", e, process.getLabel());
+                Key.of("error", e.getCause().getMessage()));
+            logger.debug("Failed to execute command '{0}'", e.getCause(), process.getLabel());
         }
         return true;
     }
