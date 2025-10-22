@@ -58,6 +58,13 @@ public final class Placeholder {
                 builder.append(character);
                 continue;
             }
+            if (index + 1 < length) {
+                char nextChar = message.charAt(index + 1);
+                if (nextChar == ';') {
+                    builder.append(nextChar);
+                    index++;
+                }
+            }
             build(placeholders, builder.toString());
             builder = null;
             escaped = false;
@@ -69,8 +76,14 @@ public final class Placeholder {
     }
 
     private static void build(final HashMap<String, Placeholder> map, final String original) {
-        final String id = original.substring(1);
-        if (id.length() == 0 || id.length() == 1 && id.charAt(0) == '#' || map.containsKey(id)) {
+        String id = original.substring(1);
+        if (id.isEmpty()) {
+            return;
+        }
+        if (id.charAt(id.length() - 1) == ';') {
+            id = original.substring(0, id.length() - 1);
+        }
+        if (id.isEmpty() || id.length() == 1 && id.charAt(0) == '#' || map.containsKey(id)) {
             return;
         }
         map.put(id, new Placeholder(id, original));
