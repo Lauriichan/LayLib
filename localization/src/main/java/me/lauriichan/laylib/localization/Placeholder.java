@@ -58,12 +58,9 @@ public final class Placeholder {
                 builder.append(character);
                 continue;
             }
-            if (index + 1 < length) {
-                char nextChar = message.charAt(index + 1);
-                if (nextChar == ';') {
-                    builder.append(nextChar);
-                    index++;
-                }
+            if (character == ';') {
+                builder.append(character);
+                index++;
             }
             build(placeholders, builder.toString());
             builder = null;
