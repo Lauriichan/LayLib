@@ -81,7 +81,7 @@ public final class Placeholder {
             return;
         }
         if (id.charAt(id.length() - 1) == ';') {
-            id = original.substring(0, id.length() - 1);
+            id = id.substring(0, id.length() - 1);
         }
         if (id.isEmpty() || id.length() == 1 && id.charAt(0) == '#' || map.containsKey(id)) {
             return;
