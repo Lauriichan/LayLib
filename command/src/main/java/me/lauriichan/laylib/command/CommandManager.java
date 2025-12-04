@@ -65,7 +65,7 @@ public final class CommandManager {
     public String getPrefix() {
         return prefix;
     }
-    
+
     public ISimpleLogger getLogger() {
         return logger;
     }
@@ -107,7 +107,7 @@ public final class CommandManager {
             return null;
         }
         NodeAction action = node.getAction();
-        if(action.isRestricted() && !actor.hasPermission(action.getPermission())) {
+        if (action.isRestricted() && !actor.hasPermission(action.getPermission())) {
             actor.sendTranslatedMessage("command.process.not-permitted", Key.of("permission", action.getPermission()));
             return null;
         }
@@ -217,22 +217,31 @@ public final class CommandManager {
     }
 
     public boolean executeProcess(Actor<?> actor, CommandProcess process) {
+        try {
+            return executeProcessWithError(actor, process);
+        } catch (Throwable e) {
+            actor.sendTranslatedMessage("command.process.execution.failed", Key.of("command", process.getLabel()),
+                Key.of("error", e.getCause().getMessage()));
+            logger.debug("Failed to execute command '{0}'", e.getCause(), process.getLabel());
+            return true;
+        }
+    }
+
+    public boolean executeProcessWithError(Actor<?> actor, CommandProcess process) throws Throwable {
         if (process == null || process.findNext(actor) != null) {
             return false;
         }
         process.executed();
         processes.remove(actor.getId()); // Remove process before executing
         NodeAction action = process.getAction();
-        if(action.isRestricted() && !actor.hasPermission(action.getPermission())) {
+        if (action.isRestricted() && !actor.hasPermission(action.getPermission())) {
             actor.sendTranslatedMessage("command.process.not-permitted", Key.of("permission", action.getPermission()));
             return true;
         }
         try {
             JavaAccess.PLATFORM.invoke(process.getInstance(), action.getMethod(), process.getValues());
         } catch (AccessFailedException e) {
-            actor.sendTranslatedMessage("command.process.execution.failed", Key.of("command", process.getLabel()),
-                Key.of("error", e.getCause().getMessage()));
-            logger.debug("Failed to execute command '{0}'", e.getCause(), process.getLabel());
+            throw e.getCause();
         }
         return true;
     }
@@ -280,7 +289,7 @@ public final class CommandManager {
     public NodeCommand getCommand(String name) {
         return commands.get(name.toLowerCase());
     }
-    
+
     public List<NodeCommand> getCommands() {
         return commands.values().stream().distinct().collect(Collectors.toList());
     }
