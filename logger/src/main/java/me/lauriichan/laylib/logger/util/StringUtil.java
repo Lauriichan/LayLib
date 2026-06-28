@@ -9,14 +9,15 @@ public final class StringUtil {
         throw new UnsupportedOperationException();
     }
 
-    public static String format(String message, Object[] placeholders) {
-        if (placeholders.length == 0) {
+    public static String format(String message, Object... placeholders) {
+        if (placeholders == null || placeholders.length == 0) {
             return message;
         }
         StringBuilder output = new StringBuilder();
         char[] chars = message.toCharArray();
         StringBuilder buffer = new StringBuilder();
         int state = 0;
+        int relativeIndex = 0;
         for (int index = 0; index < chars.length; index++) {
             char current = chars[index];
             switch (current) {
@@ -31,17 +32,16 @@ public final class StringUtil {
                 state = 1;
                 break;
             case '}':
-                if (state != 2) {
-                    output.append('{');
+                if (state == 0) {
+                    output.append('}');
                     if (buffer.length() != 0) {
                         output.append(buffer);
                         buffer = new StringBuilder();
                     }
-                    state = 0;
                     break;
                 }
                 try {
-                    int idx = Integer.parseInt(buffer.toString());
+                    int idx = buffer.length() == 0 ? relativeIndex++ : Integer.parseInt(buffer.toString());
                     if (idx >= placeholders.length || idx < 0) {
                         output.append('{').append(buffer).append('}');
                         break;
@@ -106,6 +106,11 @@ public final class StringUtil {
 
     public static StringBuilder stackTraceToBuilder(Throwable throwable) {
         StringBuilder builder = new StringBuilder();
+        stackTraceToBuilder(throwable, builder, false);
+        return builder;
+    }
+
+    public static StringBuilder stackTraceToBuilder(Throwable throwable, StringBuilder builder) {
         stackTraceToBuilder(throwable, builder, false);
         return builder;
     }
